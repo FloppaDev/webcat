@@ -12,7 +12,9 @@ with open(f'{gen}/data.js', 'r') as file:
     data_txt = file.read()
 
 keys = re.findall('//{{[a-zA-Z_]+[a-zA-Z0-9_]*}}', data_txt)
-tab = "    "
+tab = '    '
+ansi_base = '\033[0m'
+ansi_bold = '\033[0;1m'
 
 def strlist(list, tabn):
     result = ""
@@ -29,7 +31,10 @@ def strlist(list, tabn):
     return result
 
 def title(s):
-    print(f'----------------- {s}: -----------------')
+    print(f'-----------------{ansi_bold} {s}: {ansi_base}-----------------')
+
+def end():
+    print('---------------------------------------------------------')
 
 def shaders():
     shaders = []
@@ -75,7 +80,7 @@ def shaders():
 
         if alone:
             if ext1 == 'vert':
-                lines.append(
+                shader_progs.append(
                     '%s:{ vert: "%s", frag: "%s" }' % (name1, shader1, "null"))
             else:
                 raise Exception(f'Unexpected extension for {shader1}')
@@ -100,3 +105,5 @@ for key in keys:
 
 with open(f'{root}/src/data.js', "w") as file:
     file.write(data_txt)
+
+end()

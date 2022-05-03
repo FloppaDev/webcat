@@ -1,11 +1,15 @@
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import pathlib
+import subprocess
 
 BIND_HOST = 'localhost'
 PORT = 8080
 
 root = pathlib.Path(__file__).parent.parent.parent.resolve()
+
+def gen():
+    subprocess.run([f'{root}/sh/gen.sh'])
 
 def f(path):
     with open(f'{root}/{path}', 'rb') as file:
@@ -13,9 +17,12 @@ def f(path):
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        self.send_response(200)
-
         s = self.requestline.split()[1]
+
+        if s == '/':
+            gen() 
+
+        self.send_response(200)
 
         if s.endswith('html') or s == '/':
             self.send_header('Content-type', 'text/html')
