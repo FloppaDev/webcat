@@ -4,11 +4,11 @@ import re
 import os
 from pprint import pprint
 
-root = pathlib.Path(__file__).parent.parent.resolve()
+root = pathlib.Path(__file__).parent.parent.parent.resolve()
 gen = f'{root}/gen'
 data = f'{root}/data'
 
-with open(f'{gen}/templates/data.js', 'r') as file: 
+with open(f'{gen}/data.js', 'r') as file: 
     data_txt = file.read()
 
 keys = re.findall('//{{[a-zA-Z_]+[a-zA-Z0-9_]*}}', data_txt)
