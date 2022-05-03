@@ -12,6 +12,24 @@ with open(f'{gen}/templates/data.js', 'r') as file:
     data_txt = file.read()
 
 keys = re.findall('//{{[a-zA-Z_]+[a-zA-Z0-9_]*}}', data_txt)
+tab = "    "
+
+def strlist(list, tabn):
+    result = ""
+
+    for i, item in enumerate(list):
+        if i != 0:
+            result += tab * tabn
+
+        result += item
+
+        if i != len(list) - 1:
+             result += ",\n"
+
+    return result
+
+def title(s):
+    print(f'----------------- {s}: -----------------')
 
 def shaders():
     shaders = []
@@ -64,12 +82,22 @@ def shaders():
 
     shader_progs = list(dict.fromkeys(shader_progs))
 
-    print('----------------- Shaders: -----------------')
+    title('Shaders')
     pprint(shader_progs)
+
+    return strlist(shader_progs, 2)
 
 def textures(): pass
 
 def sounds(): pass
 
 for key in keys:
-    eval(f'{key[4:-2]}()')
+    k = key[4:-2]
+    result = eval(k+'()')
+
+    if result != None:
+        data_txt = data_txt.replace('//{{%s}}' % k, result)
+
+title("Result")
+print(data_txt)
+
