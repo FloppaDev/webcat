@@ -47,4 +47,4 @@ httpd = HTTPServer((BIND_HOST, PORT), SimpleHTTPRequestHandler)
 try:
     httpd.serve_forever()
 except KeyboardInterrupt:
-    pass
+    print()
