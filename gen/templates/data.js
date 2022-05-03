@@ -1,5 +1,5 @@
 
-const DATA = {
+export class Data = {
 
     shaders: [
         //{{shaders}}
@@ -7,7 +7,7 @@ const DATA = {
     ],
 
     textures: [
-        //{{images}}
+        //{{textures}}
         //e.g.  texture_name: "path"
     ],
 
