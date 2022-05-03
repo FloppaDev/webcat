@@ -98,6 +98,5 @@ for key in keys:
     if result != None:
         data_txt = data_txt.replace('//{{%s}}' % k, result)
 
-title("Result")
-print(data_txt)
-
+with open(f'{root}/src/data.js', "w") as file:
+    file.write(data_txt)

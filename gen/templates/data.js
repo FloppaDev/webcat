@@ -1,19 +1,19 @@
 
-export class Data = {
+export class Data {
 
-    shaders: {
+    shaders = {
         //{{shaders}}
         //e.g.  shader_name: { vert: "...", frag: "..." }
-    },
+    };
 
-    textures: {
+    textures = {
         //{{textures}}
         //e.g.  texture_name: "path"
-    },
+    };
 
-    sounds: {
+    sounds = {
         //{{sounds}}
         //e.g.  sound_name: "path"
     }
 
-};
+}
