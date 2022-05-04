@@ -104,9 +104,32 @@ export class Engine {
         return program;
     }
 
-    load_images = async (data /*data.js:Data*/) => {
-        for(let name of data.textures) {
+    // Load an image from url.
+    #load_image = async (url) => {
+        let img;
+        await new Promise(resolve => {
+            img = new Image();
+            img.onload = resolve;
+            img.src = url;
+        });
 
+        return img;
+    }
+
+    load_textures = async (data /*data.js:Data*/) => {
+        let {ctx, textures} = this.renderer;
+        let textures_dir = "data/textures";
+
+        for(let name of data.textures) {
+            let img = await this.#load_image(`${textures_dir}/${name}`); 
+
+            let texture = ctx.createTexture();
+            ctx.bindTexture(ctx.TEXTURE_2D, texture);
+
+            ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, img);
+            //ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST); TODO fix
+
+            textures[name] = texture;
         }
     }
 

@@ -13,4 +13,6 @@ async function main() {
 
     try{ engine.load_shaders(data); }
     catch(e){ err(e); return; }
+
+    engine.load_textures(data);
 }

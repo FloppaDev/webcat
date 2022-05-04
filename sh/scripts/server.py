@@ -12,8 +12,11 @@ def gen():
     subprocess.run([f'{root}/sh/gen.sh'])
 
 def f(path):
-    with open(f'{root}/{path}', 'rb') as file:
-        return file.read()
+    try:
+        with open(f'{root}/{path}', 'rb') as file:
+            return file.read()
+    except:
+        raise Exception(f'\033[31;1mError: \033[0mCould not open {path}')
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -36,10 +39,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         if s == '/':
             file = f('index.html')
+            self.wfile.write(file)
         else:
-            file = f(s[1:])
-        
-        self.wfile.write(file)
+            try:
+                file = f(s[1:])
+                self.wfile.write(file)
+            except Exception as e:
+                print(e)
 
 print(f'Listening on http://{BIND_HOST}:{PORT}')
 
