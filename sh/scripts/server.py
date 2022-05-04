@@ -20,6 +20,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         s = self.requestline.split()[1]
 
         if s == '/':
+            print()
             gen() 
 
         self.send_response(200)
@@ -36,7 +37,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         if s == '/':
             file = f('index.html')
         else:
-            file = f(s)
+            file = f(s[1:])
         
         self.wfile.write(file)
 

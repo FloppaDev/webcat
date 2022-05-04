@@ -81,7 +81,7 @@ def shaders():
         if alone:
             if ext1 == 'vert':
                 shader_progs.append(
-                    '%s:{ vert: "%s", frag: "%s" }' % (name1, shader1, "null"))
+                    '%s:{ vert: "%s", frag: null }' % (name1, shader1))
             else:
                 raise Exception(f'Unexpected extension for {shader1}')
 

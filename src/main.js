@@ -11,5 +11,6 @@ async function main() {
     try{ engine.load_context(); }
     catch(e){ err(e); return; }
 
-    log(data.shaders);
+    try{ engine.load_shaders(data); }
+    catch(e){ err(e); return; }
 }

@@ -9,7 +9,7 @@ export class Engine {
         // Time between current and previous frame.
         delta: 0,
         // Glsl code for all shaders.
-        shader_sources: [],
+        shader_sources: {},
         // Shader stages go in there (VkPipeline but OpenGl)
         shader_programs: {},
         // Textures built from the images
@@ -41,25 +41,27 @@ export class Engine {
     // Load shader glsl code into shader_sources.
     load_shaders = async (data /*data.js:Data*/) => {
         let {ctx, shader_sources, shader_programs} = this.renderer;
+        //TODO paths in data should be relative to 'shaders', rn they're just filenames.
+        let shaders_dir = "data/shaders";
 
         for(let [name, shader] of Object.entries(data.shaders)) {
             let vert = null;
             let frag = null;
 
-            await fetch(shader.vert)
+            await fetch(`${shaders_dir}/${shader.vert}`)
                 .then(response => response.text())
                 .then(text => vert = text);
 
             if(shader.frag != null) {
-                frag = await fetch(shader.frag)
+                frag = await fetch(`${shaders_dir}/${shader.frag}`)
                     .then(response => response.text())
                     .then(text => frag = text);
             }
 
-            shaders_sources[name] = { vert: vert, frag: frag };
+            shader_sources[name] = { vert: vert, frag: frag };
         }
 
-        for(let [name, stages] of Object.entries(this.assets.shader_sources)) {
+        for(let [name, stages] of Object.entries(shader_sources)) {
             let vert = this.#build_shader(name, stages.vert, ctx.VERTEX_SHADER);
             let frag = null;
 
@@ -86,7 +88,7 @@ export class Engine {
         ctx.compileShader(shader);
 
         if (!ctx.getShaderParameter(shader, ctx.COMPILE_STATUS)) {
-            console.error(`${name}:${stage}: ${ctx.getShaderInfoLog(shader)}`);
+            throw `${name}:${stage}: ${ctx.getShaderInfoLog(shader)}`;
         }
 
         return shader;
@@ -109,7 +111,7 @@ export class Engine {
         ctx.linkProgram(program);
 
         if (!ctx.getProgramParameter(program, ctx.LINK_STATUS)) {
-            console.error(ctx.getProgramInfoLog(program));
+            throw ctx.getProgramInfoLog(program);
         }
 
         return program;
