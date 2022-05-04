@@ -79,11 +79,7 @@ def shaders():
                     raise Exception(f'No vert shader for {shader1}')
 
         if alone:
-            if ext1 == 'vert':
-                shader_progs.append(
-                    '%s:{ vert: "%s", frag: null }' % (name1, shader1))
-            else:
-                raise Exception(f'Unexpected extension for {shader1}')
+            raise Exception(f'Expected vertex and fragment stages for {shader1}')
 
     shader_progs = list(dict.fromkeys(shader_progs))
 

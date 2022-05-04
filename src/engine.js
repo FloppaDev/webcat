@@ -52,30 +52,21 @@ export class Engine {
                 .then(response => response.text())
                 .then(text => vert = text);
 
-            if(shader.frag != null) {
-                frag = await fetch(`${shaders_dir}/${shader.frag}`)
-                    .then(response => response.text())
-                    .then(text => frag = text);
-            }
+            await fetch(`${shaders_dir}/${shader.frag}`)
+                .then(response => response.text())
+                .then(text => frag = text);
 
             shader_sources[name] = { vert: vert, frag: frag };
         }
 
         for(let [name, stages] of Object.entries(shader_sources)) {
             let vert = this.#build_shader(name, stages.vert, ctx.VERTEX_SHADER);
-            let frag = null;
-
-            if(stages.frag != null) {
-                frag = this.#build_shader(name, stages.frag, ctx.FRAGMENT_SHADER);
-            }
+            let frag = this.#build_shader(name, stages.frag, ctx.FRAGMENT_SHADER);
 
             shader_programs[name] = this.#build_program(name, vert, frag);    
 
             ctx.deleteShader(vert);
-
-            if(frag != null) {
-                ctx.deleteShader(frag);
-            }
+            ctx.deleteShader(frag);
         }
     }
 
@@ -102,10 +93,7 @@ export class Engine {
 
         // Attach shader stages.
         ctx.attachShader(program, vert);
-
-        if(frag != null) {
-            ctx.attachShader(program, frag);
-        }
+        ctx.attachShader(program, frag);
 
         // Build the program.
         ctx.linkProgram(program);
