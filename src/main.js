@@ -15,4 +15,5 @@ async function main() {
     catch(e){ err(e); return; }
 
     engine.load_textures(data);
+    engine.create_quad_vbo();
 }

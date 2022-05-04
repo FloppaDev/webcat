@@ -133,4 +133,27 @@ export class Engine {
         }
     }
 
+    // Quad buffer, it will be used to render sprites.
+    create_quad_vbo = () => {
+        let {ctx, quad_vbo} = this.renderer;
+
+        // Two triangles to define the quad.
+        let vertices = new Float32Array([
+            -1, -1,
+            -1, 1,
+            1, 1,
+            1, 1,
+            1, -1,
+            -1, -1,
+        ]);
+
+        // Create buffer and upload vertices.
+        quad_vbo = ctx.createBuffer();
+        ctx.bindBuffer(ctx.ARRAY_BUFFER, quad_vbo);
+        ctx.bufferData(ctx.ARRAY_BUFFER, vertices, ctx.STATIC_DRAW);
+
+        // Unbind buffer.
+        ctx.bindBuffer(ctx.ARRAY_BUFFER, null);
+    }
+
 }
