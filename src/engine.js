@@ -41,7 +41,6 @@ export class Engine {
     // Load shader glsl code into shader_sources.
     load_shaders = async (data /*data.js:Data*/) => {
         let {ctx, shader_sources, shader_programs} = this.renderer;
-        //TODO paths in data should be relative to 'shaders', rn they're just filenames.
         let shaders_dir = "data/shaders";
 
         for(let [name, shader] of Object.entries(data.shaders)) {
@@ -103,6 +102,12 @@ export class Engine {
         }
 
         return program;
+    }
+
+    load_images = async (data /*data.js:Data*/) => {
+        for(let name of data.textures) {
+
+        }
     }
 
 }

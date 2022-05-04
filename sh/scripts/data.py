@@ -39,10 +39,16 @@ def end():
 def shaders():
     shaders = []
     shader_progs = []
+    d = f'{data}/shaders'
 
-    for path, subdirs, files in os.walk(f'{data}/shaders'):
+    for path, dirs, files in os.walk(d):
         for file in files:
-            shaders.append(file)
+            f = os.path.join(path[len(d):], file)
+
+            if f[0] == '/':
+                f = f[1:]
+
+            shaders.append(f)
 
     for shader1 in shaders:
         alone = True
@@ -62,7 +68,7 @@ def shaders():
                 if ext1 == 'vert':
                     if ext2 == 'frag':
                         shader_progs.append(
-                            '%s:{ vert: "%s", frag: "%s" }' % (name1, shader1, shader2))
+                            '"%s":{ vert: "%s", frag: "%s" }' % (name1, shader1, shader2))
                         alone = False
                         break
                     else:
@@ -70,7 +76,7 @@ def shaders():
                 elif ext2 == 'vert':
                     if ext1 == 'frag':
                         shader_progs.append(
-                            '%s:{ vert: "%s", frag: "%s" }' % (name1, shader2, shader1))
+                            '"%s":{ vert: "%s", frag: "%s" }' % (name1, shader2, shader1))
                         alone = False
                         break
                     else:

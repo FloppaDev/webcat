@@ -2,19 +2,19 @@
 export class Data {
 
     shaders = {
-        default:{ vert: "default.vert", frag: "default.frag" },
-        test:{ vert: "test.vert", frag: null }
+        "default":{ vert: "default.vert", frag: "default.frag" },
+        "a/b/c":{ vert: "a/b/c.vert", frag: "a/b/c.frag" }
         //e.g.  shader_name: { vert: "...", frag: "..." }
     };
 
-    textures = {
+    textures = [
         //{{textures}}
-        //e.g.  texture_name: "path"
-    };
+        //e.g.  "path"
+    ];
 
-    sounds = {
+    sounds = [
         //{{sounds}}
-        //e.g.  sound_name: "path"
-    }
+        //e.g.  "path"
+    ];
 
 }
