@@ -36,11 +36,7 @@ def title(s):
 def end():
     print('---------------------------------------------------------')
 
-def shaders():
-    shaders = []
-    shader_progs = []
-    d = f'{data}/shaders'
-
+def walk(d, target):
     for path, dirs, files in os.walk(d):
         for file in files:
             f = os.path.join(path[len(d):], file)
@@ -48,7 +44,13 @@ def shaders():
             if f[0] == '/':
                 f = f[1:]
 
-            shaders.append(f)
+            target.append(f)
+
+def shaders():
+    shaders = []
+    shader_progs = []
+
+    walk(f'{data}/shaders', shaders)
 
     for shader1 in shaders:
         alone = True
@@ -94,9 +96,27 @@ def shaders():
 
     return strlist(shader_progs, 2)
 
-def textures(): pass
+def textures():
+    textures = []
+    lines = []
 
-def sounds(): pass
+    walk(f'{data}/textures', textures)
+
+    for texture in textures:
+        lines.append(f'"{texture}"')
+
+    return strlist(lines, 2)
+
+def sounds():
+    sounds = []
+    lines = []
+
+    walk(f'{data}/sounds', sounds)
+
+    for sound in sounds:
+        lines.append(f'"{sound}"')
+
+    return strlist(lines, 2)
 
 for key in keys:
     k = key[4:-2]

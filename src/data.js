@@ -8,12 +8,12 @@ export class Data {
     };
 
     textures = [
-        //{{textures}}
+        "grid.png"
         //e.g.  "path"
     ];
 
     sounds = [
-        //{{sounds}}
+        
         //e.g.  "path"
     ];
 
