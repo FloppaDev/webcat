@@ -46,50 +46,59 @@ def walk(d, target):
 
             target.append(f)
 
+def add_shader(paths, progs):
+    current_name = None
+    vert = None
+    frag = None
+    js = None
+
+    i = len(paths) - 1
+
+    while i >= 0:
+        shader = paths[i]
+        split = shader.split('.')
+        name = split[0]
+        ext = split[1]
+        print(ext)
+
+        if current_name == None:
+            current_name = name
+
+        if current_name == name:
+            if ext == 'vert':
+                vert = shader
+                del paths[i]
+            elif ext == 'frag':
+                frag = shader 
+                del paths[i]
+            elif ext == 'js':
+                js = shader 
+                del paths[i]
+
+        i -= 1
+
+    if vert == None: 
+        raise Exception(f'Missing vert file for shader {current_name}.')
+
+    if frag == None: 
+        raise Exception(f'Missing frag file for shader {current_name}.')
+
+    if js == None: 
+        raise Exception(f'Missing js file for shader {current_name}.')
+
+    progs.append(
+        '"%s":{ vert: "%s", frag: "%s", js: "%s" }' % (
+            current_name, vert, frag, js))
+
+
 def shaders():
-    shaders = []
+    paths = []
     shader_progs = []
 
-    walk(f'{data}/shaders', shaders)
+    walk(f'{data}/shaders', paths)
 
-    for shader1 in shaders:
-        alone = True
-        split = shader1.split('.')
-        name1 = split[0]
-        ext1 = split[1]
-
-        for shader2 in shaders:
-            if shader1 == shader2:
-                continue
-
-            split = shader2.split('.')
-            name2 = split[0]
-            ext2 = split[1]
-
-            if name1 == name2:
-                if ext1 == 'vert':
-                    if ext2 == 'frag':
-                        shader_progs.append(
-                            '"%s":{ vert: "%s", frag: "%s" }' % (name1, shader1, shader2))
-                        alone = False
-                        break
-                    else:
-                        raise Exception(f'Unexpected extension for {shader2}')
-                elif ext2 == 'vert':
-                    if ext1 == 'frag':
-                        shader_progs.append(
-                            '"%s":{ vert: "%s", frag: "%s" }' % (name1, shader2, shader1))
-                        alone = False
-                        break
-                    else:
-                        raise Exception(f'Unexpected extension for {shader1}')
-                else:
-                    raise Exception(f'No vert shader for {shader1}')
-
-        if alone:
-            raise Exception(f'Expected vertex and fragment stages for {shader1}')
-
-    shader_progs = list(dict.fromkeys(shader_progs))
+    while len(paths) > 0:
+        add_shader(paths, shader_progs)
 
     title('Shaders')
     pprint(shader_progs)
