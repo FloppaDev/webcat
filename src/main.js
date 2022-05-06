@@ -16,4 +16,6 @@ async function main() {
 
     engine.load_textures(data);
     engine.create_quad_vbo();
+
+    window.requestAnimationFrame(engine.draw);
 }

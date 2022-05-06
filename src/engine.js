@@ -156,4 +156,40 @@ export class Engine {
         ctx.bindBuffer(ctx.ARRAY_BUFFER, null);
     }
 
+    // Called each frame.
+    draw = (t) => {
+        let {ctx} = this.renderer;
+        let {canvas} = ctx;
+
+        // Update time infos.
+        let t_sec = t / 1000;
+        this.renderer.delta = t_sec - this.renderer.time;
+        this.renderer.time = t_sec;
+
+        // Gameplay happens here.
+        //TODO
+
+        //TODO do that somewhere else {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+        ctx.viewport(0, 0, canvas.width, canvas.height);
+
+        ctx.imageSmoothingEnabled = false;//TODO not working
+
+        let {camera} = this.renderer;
+        camera.scaling_x = 1 / canvas.width * (canvas.width / canvas.height);
+        camera.scaling_y = 1 / canvas.height;
+        //}
+
+        // Clear frame buffer before drawing.
+        ctx.clearColor(0.0, 0.0, 0.0, 1.0);
+        ctx.clear(ctx.COLOR_BUFFER_BIT);
+
+        // Draw all objects.
+        //TODO
+
+        // Request next frame.
+        window.requestAnimationFrame(this.draw);
+    }   
+
 }
