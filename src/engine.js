@@ -1,4 +1,6 @@
 
+import {V2} from "./maths.js";
+
 export class Engine {
 
     renderer = {
@@ -17,7 +19,7 @@ export class Engine {
         // Vertex buffer used for all draws.
         quad_vbo: null,
         quad_vao: null,
-        camera: null,
+        camera: new Camera(),
     };
 
     // Load OpenGl context.
@@ -177,8 +179,8 @@ export class Engine {
         ctx.imageSmoothingEnabled = false;//TODO not working
 
         let {camera} = this.renderer;
-        camera.scaling_x = 1 / canvas.width * (canvas.width / canvas.height);
-        camera.scaling_y = 1 / canvas.height;
+        camera.scale.x = 1 / canvas.width * (canvas.width / canvas.height);
+        camera.scale.x = 1 / canvas.height;
         //}
 
         // Clear frame buffer before drawing.
@@ -191,5 +193,17 @@ export class Engine {
         // Request next frame.
         window.requestAnimationFrame(this.draw);
     }   
+
+}
+
+export class Camera {
+
+    position = new V2(0, 0);
+    depth = 10;
+    scale = new V2(0, 0);
+
+    constructor() {
+        
+    }
 
 }
