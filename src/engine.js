@@ -158,6 +158,18 @@ export class Engine {
         ctx.bindBuffer(ctx.ARRAY_BUFFER, null);
     }
 
+    // Bind camera to a uniform in specified program.
+    bind_camera = (ctx, program) => {
+        let {camera} = this.renderer;
+
+        let {x, y} = camera.position;
+        //TODO depth
+        let {scale_x, scale_y} = camera.scale;
+
+        let loc = ctx.getUniformLocation(program, "camera");
+        ctx.uniform4fv(loc, [x, y, scale_x, scale_y]);
+    }
+
     // Called each frame.
     draw = (t) => {
         let {ctx} = this.renderer;
