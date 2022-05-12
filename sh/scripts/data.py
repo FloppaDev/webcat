@@ -1,4 +1,6 @@
 
+#TODO rework formatting of generated code.
+
 import pathlib
 import re
 import os
@@ -10,6 +12,9 @@ data = f'{root}/data'
 
 with open(f'{gen}/data.js', 'r') as file: 
     data_txt = file.read()
+
+with open(f'{gen}/pipelines.js', 'r') as file: 
+    pipelines_txt = file.read()
 
 keys = re.findall('//{{[a-zA-Z_]+[a-zA-Z0-9_]*}}', data_txt)
 tab = '    '
@@ -46,7 +51,7 @@ def walk(d, target):
 
             target.append(f)
 
-def add_shader(paths, progs):
+def add_shader(paths, progs, pipelines):
     current_name = None
     vert = None
     frag = None
@@ -87,23 +92,35 @@ def add_shader(paths, progs):
         raise Exception(f'Missing js file for shader {current_name}.')
 
     progs.append(
-        '"%s":{ vert: "%s", frag: "%s", js: "%s" }' % (
-            current_name, vert, frag, js))
+        '"%s":{ vert: "%s", frag: "%s" }' % (
+            current_name, vert, frag))
 
+    with open(f'{data}/shaders/{js}', 'r') as file: 
+        js_txt = file.read()
+
+    pipelines.append(
+        '"%s": {\n%s\n},\n' % (current_name, js_txt))
 
 def shaders():
     paths = []
-    shader_progs = []
+    progs = []
+    pipelines = []
 
     walk(f'{data}/shaders', paths)
 
     while len(paths) > 0:
-        add_shader(paths, shader_progs)
+        add_shader(paths, progs, pipelines)
 
     title('Shaders')
-    pprint(shader_progs)
+    pprint(progs)
 
-    return strlist(shader_progs, 2)
+    title('Pipelines')
+    pprint(pipelines)
+
+    with open(f'{root}/src/pipelines.js', "w") as file:
+        file.write(pipelines_txt.replace('//{{pipelines}}', strlist(pipelines, 1)))
+
+    return strlist(progs, 2)
 
 def textures():
     textures = []

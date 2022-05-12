@@ -2,7 +2,7 @@
 export class Data {
 
     shaders = {
-        "default":{ vert: "default.vert", frag: "default.frag", js: "default.js" }
+        "default":{ vert: "default.vert", frag: "default.frag" }
         //e.g.  shader_name: { vert: "...", frag: "..." }
     };
 
