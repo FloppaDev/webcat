@@ -200,7 +200,23 @@ export class Engine {
         ctx.clear(ctx.COLOR_BUFFER_BIT);
 
         // Draw all objects.
-        //TODO
+        for (let [program, calls] of Object.entries(scene.draw_calls)) {
+            //TODO bind program
+
+            for (let [object, transforms] of Object.entries(calls)) {
+                let draw = [];
+
+                for (let transform of transform) {
+                    if (transform.is_active) {
+                        //TODO
+                        draw.push(transform);
+                    }
+                }
+
+                //TODO bind ubos
+                //TODO draw object with all transforms.
+            }
+        }
 
         // Request next frame.
         window.requestAnimationFrame(this.draw);
