@@ -1,5 +1,5 @@
 
-export class Scene {
+export class World {
 
     constructor() {
 

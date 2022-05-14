@@ -1,4 +1,6 @@
 
+import {V2} from "./maths.js";
+
 export class Camera {
 
     constructor() {
