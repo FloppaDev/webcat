@@ -34,11 +34,8 @@ export class Pipeline {
 
 export class Material {
 
-    // Define structure of the material, along with default values.
-    material = (engine /*engine.js:Engine*/) => {
-        {
-            texture: "grid.png",
-        }
-    };
+    constructor() {
+        this.texture = "grid.png";
+    }
 
 }

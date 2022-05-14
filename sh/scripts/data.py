@@ -9,14 +9,11 @@ from pprint import pprint
 root = pathlib.Path(__file__).parent.parent.parent.resolve()
 gen = f'{root}/gen'
 data = f'{root}/data'
+data_txt = ''
 
 with open(f'{gen}/data.js', 'r') as file: 
     data_txt = file.read()
 
-with open(f'{gen}/pipelines.js', 'r') as file: 
-    pipelines_txt = file.read()
-
-keys = re.findall('//{{[a-zA-Z_]+[a-zA-Z0-9_]*}}', data_txt)
 tab = '    '
 ansi_base = '\033[0m'
 ansi_bold = '\033[0;1m'
@@ -51,11 +48,11 @@ def walk(d, target):
 
             target.append(f)
 
-def add_shader(paths, progs, pipelines):
+def add_shader(paths, progs, modules):
     current_name = None
     vert = None
     frag = None
-    js = None
+    module = None
 
     i = len(paths) - 1
 
@@ -64,7 +61,6 @@ def add_shader(paths, progs, pipelines):
         split = shader.split('.')
         name = split[0]
         ext = split[1]
-        print(ext)
 
         if current_name == None:
             current_name = name
@@ -77,7 +73,8 @@ def add_shader(paths, progs, pipelines):
                 frag = shader 
                 del paths[i]
             elif ext == 'js':
-                js = shader 
+                module = f'$shader_{name}'
+                #TODO replace '/' with '__' for example.
                 del paths[i]
 
         i -= 1
@@ -88,41 +85,39 @@ def add_shader(paths, progs, pipelines):
     if frag == None: 
         raise Exception(f'Missing frag file for shader {current_name}.')
 
-    if js == None: 
+    if module == None: 
         raise Exception(f'Missing js file for shader {current_name}.')
 
     progs.append(
-        '"%s":{ vert: "%s", frag: "%s" }' % (
-            current_name, vert, frag))
+        '"%s":{ vert: "%s", frag: "%s", module: %s }' % (
+            current_name, vert, frag, module))
 
-    with open(f'{data}/shaders/{js}', 'r') as file: 
-        js_txt = file.read()
+    #TODO replace '/' with '__' for example.
+    modules.append(
+        f'import * as $shader_{name} from "../data/shaders/{name}.js";')
 
-    pipelines.append(
-        '"%s": {\n%s\n},\n' % (current_name, js_txt))
-
-def shaders():
+def shaders(data_txt):
     paths = []
     progs = []
-    pipelines = []
+    modules = []
 
     walk(f'{data}/shaders', paths)
 
     while len(paths) > 0:
-        add_shader(paths, progs, pipelines)
+        add_shader(paths, progs, modules)
 
     title('Shaders')
     pprint(progs)
 
-    title('Pipelines')
-    pprint(pipelines)
+    title('Modules')
+    pprint(modules)
+        
+    data_txt = data_txt.replace('//{{shaders}}', strlist(progs, 2))
+    data_txt = data_txt.replace('//{{shader_modules}}', strlist(modules, 0))
 
-    with open(f'{root}/src/pipelines.js', "w") as file:
-        file.write(pipelines_txt.replace('//{{pipelines}}', strlist(pipelines, 1)))
+    return data_txt
 
-    return strlist(progs, 2)
-
-def textures():
+def textures(data_txt):
     textures = []
     lines = []
 
@@ -131,9 +126,11 @@ def textures():
     for texture in textures:
         lines.append(f'"{texture}"')
 
-    return strlist(lines, 2)
+    data_txt = data_txt.replace('//{{textures}}', strlist(lines, 2))
 
-def sounds():
+    return data_txt
+
+def sounds(data_txt):
     sounds = []
     lines = []
 
@@ -142,14 +139,13 @@ def sounds():
     for sound in sounds:
         lines.append(f'"{sound}"')
 
-    return strlist(lines, 2)
+    data_txt = data_txt.replace('//{{sounds}}', strlist(lines, 2))
 
-for key in keys:
-    k = key[4:-2]
-    result = eval(k+'()')
+    return data_txt
 
-    if result != None:
-        data_txt = data_txt.replace('//{{%s}}' % k, result)
+data_txt = shaders(data_txt)
+data_txt = textures(data_txt)
+data_txt = sounds(data_txt)
 
 with open(f'{root}/src/data.js', "w") as file:
     file.write(data_txt)
