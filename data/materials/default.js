@@ -1,4 +1,12 @@
 
-properties: (material /*shaders/x.js:material*/) => {
+export class Material {
 
-}
+    constructor() {
+
+    }
+
+    properties = (material_class /*shaders/x.js:Material*/) => {
+
+    };
+
+} 

@@ -1,20 +1,20 @@
 
-//-------Script properties--------
+export class Script {
 
-// When does the script run?
-on: (handler /*TODO*/) => handler.UPDATE,
+    constructor() {
+        this.speed = 1;
+    }
 
-order: 0,
+    // When does the script run?
+    on: (handler /*TODO*/) => handler.UPDATE,
 
-// Body of the script.
-run: (
-    engine /*engine.js:Engine*/,
-    scene /*TODO*/, 
-    object /*TODO*/,
-) => {
-    object.transform.rotate(this.speed * engine.delta);
-},
+    // Body of the script.
+    run: (
+        engine /*engine.js:Engine*/,
+        scene /*TODO*/, 
+        object /*TODO*/,
+    ) => {
+        object.transform.rotate(this.speed * engine.delta);
+    },
 
-//-------Custom properties--------
-
-speed: 1
+}
