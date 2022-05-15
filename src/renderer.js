@@ -27,12 +27,12 @@ export class Renderer {
 
     /*Call from "engine.js:Engine"*/
     // Start rendering.
-    start = () => {
+    start() {
         window.requestAnimationFrame(this.#draw);
     }
 
     // Load OpenGl context.
-    #load_context = () => {
+    #load_context() {
         // Create canvas and set resolution to dimensions from html element.
         const canvas = document.querySelector("#canvas");
         canvas.width = canvas.clientWidth;
@@ -50,7 +50,7 @@ export class Renderer {
     }
 
     // Load shader glsl code into shader_sources.
-    #load_shaders = async (data /*data.js:Data*/) => {
+    async #load_shaders(data /*data.js:Data*/) {
         let {ctx, shader_sources, shader_programs} = this;
         let shaders_dir = "data/shaders";
 
@@ -81,7 +81,7 @@ export class Renderer {
     }
 
     // Compile shader from source.
-    #build_shader = (name, source, stage) => {
+    #build_shader(name, source, stage) {
         let {ctx} = this;
 
         let shader = ctx.createShader(stage);
@@ -96,7 +96,7 @@ export class Renderer {
     }
 
     // Combine shaders into a program.
-    #build_program = (name, vert, frag) => {
+    #build_program(name, vert, frag) {
         let {ctx} = this;
 
         let program = ctx.createProgram();
@@ -116,7 +116,7 @@ export class Renderer {
     }
 
     // Load an image from url.
-    #load_image = async (url) => {
+    async #load_image(url) {
         let img;
         await new Promise(resolve => {
             img = new Image();
@@ -127,7 +127,7 @@ export class Renderer {
         return img;
     }
 
-    #load_textures = async (data /*data.js:Data*/) => {
+    async #load_textures(data /*data.js:Data*/) {
         let {ctx, textures} = this;
         let textures_dir = "data/textures";
 
@@ -145,7 +145,7 @@ export class Renderer {
     }
 
     // Quad buffer, it will be used to render sprites.
-    #create_quad_vbo = () => {
+    #create_quad_vbo() {
         let {ctx, quad_vbo} = this;
 
         // Two triangles to define the quad.
@@ -168,7 +168,7 @@ export class Renderer {
     }
 
     // Bind camera to a uniform in specified program.
-    #bind_camera = (ctx, program) => {
+    #bind_camera(ctx, program) {
         let {camera} = this;
         let {x, y} = camera.position;
         let {scale_x, scale_y} = camera.scale; //TODO depth
@@ -178,7 +178,7 @@ export class Renderer {
     }
 
     // Called each frame.
-    #draw = (t) => {
+    #draw(t) {
         let {ctx} = this;
 
         // Update time infos.
