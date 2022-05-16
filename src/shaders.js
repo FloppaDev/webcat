@@ -2,8 +2,8 @@
 export class Shader {
 
     constructor(
-        vert /*e.g. default.vert*/,
-        frag /*e.g. default.frag*/,
+        vert /*e.g. "default.vert"*/,
+        frag /*e.g. "default.frag"*/,
         module /*e.g. data/shaders/default.js*/
     ) {
         this.vert = vert;

@@ -1,4 +1,6 @@
 
+import {Shader} from "./shaders.js";
+
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";
 
@@ -13,7 +15,7 @@ export class Data {
 
     shaders = {
         //{{shaders}}
-        //e.g.  shader_name: { vert: "...", frag: "...", module:$shader_default }
+        //e.g.  shader_name: new Shader("x.vert", "x.frag", $shader_x)
     };
 
     textures = [

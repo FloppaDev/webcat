@@ -89,7 +89,7 @@ def add_shader(paths, progs, modules):
         raise Exception(f'Missing js file for shader {current_name}.')
 
     progs.append(
-        '"%s":{ vert: "%s", frag: "%s", module: %s }' % (
+        '"%s": new Shader("%s", "%s", %s)' % (
             current_name, vert, frag, module))
 
     #TODO replace '/' with '__' for example.
