@@ -8,8 +8,6 @@ export class Renderer {
         this.ctx = null;                 // OpenGl context.
         this.time = 0;                   // Time in seconds since the engine started.
         this.delta = 0;                  // Time between current and previous frame.
-        this.shader_sources = {};        // Glsl code for all shaders.
-        this.shader_programs = {};       // Shader stages go in there (VkPipeline but OpenGl)
         this.textures = {};              // Textures built from the images
         this.quad_vbo = null;            // Vertex buffer used for all draws.
         this.quad_vao = null;
@@ -23,6 +21,9 @@ export class Renderer {
 
         this.#load_textures(data);
         this.#create_quad_vbo();
+        
+        try{ this.#build_programs(); }
+        catch(e){ err(e); throw "Renderer failed to start."; }
     }
 
     /*Call from "engine.js:Engine"*/
@@ -47,72 +48,6 @@ export class Renderer {
         }
 
         this.ctx = ctx;
-    }
-
-    // Load shader glsl code into shader_sources.
-    async #load_shaders(data /*data.js:Data*/) {
-        let {ctx, shader_sources, shader_programs} = this;
-        let shaders_dir = "data/shaders";
-
-        for(let [name, shader] of Object.entries(data.shaders)) {
-            let vert = null;
-            let frag = null;
-
-            await fetch(`${shaders_dir}/${shader.vert}`)
-                .then(response => response.text())
-                .then(text => vert = text);
-
-            await fetch(`${shaders_dir}/${shader.frag}`)
-                .then(response => response.text())
-                .then(text => frag = text);
-
-            shader_sources[name] = { vert: vert, frag: frag };
-        }
-
-        for(let [name, stages] of Object.entries(shader_sources)) {
-            let vert = this.#build_shader(name, stages.vert, ctx.VERTEX_SHADER);
-            let frag = this.#build_shader(name, stages.frag, ctx.FRAGMENT_SHADER);
-
-            shader_programs[name] = this.#build_program(name, vert, frag);    
-
-            ctx.deleteShader(vert);
-            ctx.deleteShader(frag);
-        }
-    }
-
-    // Compile shader from source.
-    #build_shader(name, source, stage) {
-        let {ctx} = this;
-
-        let shader = ctx.createShader(stage);
-        ctx.shaderSource(shader, source);
-        ctx.compileShader(shader);
-
-        if (!ctx.getShaderParameter(shader, ctx.COMPILE_STATUS)) {
-            throw `${name}:${stage}: ${ctx.getShaderInfoLog(shader)}`;
-        }
-
-        return shader;
-    }
-
-    // Combine shaders into a program.
-    #build_program(name, vert, frag) {
-        let {ctx} = this;
-
-        let program = ctx.createProgram();
-
-        // Attach shader stages.
-        ctx.attachShader(program, vert);
-        ctx.attachShader(program, frag);
-
-        // Build the program.
-        ctx.linkProgram(program);
-
-        if (!ctx.getProgramParameter(program, ctx.LINK_STATUS)) {
-            throw ctx.getProgramInfoLog(program);
-        }
-
-        return program;
     }
 
     // Load an image from url.
