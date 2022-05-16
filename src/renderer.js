@@ -8,7 +8,6 @@ export class Renderer {
         this.ctx = null;                 // OpenGl context.
         this.time = 0;                   // Time in seconds since the engine started.
         this.delta = 0;                  // Time between current and previous frame.
-        this.textures = {};              // Textures built from the images
         this.quad_vbo = null;            // Vertex buffer used for all draws.
         this.quad_vao = null;
         this.camera = new Camera();
@@ -16,14 +15,7 @@ export class Renderer {
         try{ this.#load_context(); }
         catch(e){ err(e); throw "Renderer failed to start."; }
 
-        try{ this.#load_shaders(data); }
-        catch(e){ err(e); throw "Renderer failed to start."; }
-
-        this.#load_textures(data);
         this.#create_quad_vbo();
-        
-        try{ this.#build_programs(); }
-        catch(e){ err(e); throw "Renderer failed to start."; }
     }
 
     /*Call from "engine.js:Engine"*/
@@ -48,35 +40,6 @@ export class Renderer {
         }
 
         this.ctx = ctx;
-    }
-
-    // Load an image from url.
-    async #load_image(url) {
-        let img;
-        await new Promise(resolve => {
-            img = new Image();
-            img.onload = resolve;
-            img.src = url;
-        });
-
-        return img;
-    }
-
-    async #load_textures(data /*data.js:Data*/) {
-        let {ctx, textures} = this;
-        let textures_dir = "data/textures";
-
-        for(let name of data.textures) {
-            let img = await this.#load_image(`${textures_dir}/${name}`); 
-
-            let texture = ctx.createTexture();
-            ctx.bindTexture(ctx.TEXTURE_2D, texture);
-
-            ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, img);
-            //ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST); TODO fix
-
-            textures[name] = texture;
-        }
     }
 
     // Quad buffer, it will be used to render sprites.

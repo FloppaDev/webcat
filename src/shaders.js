@@ -14,7 +14,8 @@ export class Shader {
     }
 
     // Builds a shader program from sources. 
-    /*Call from 'data.js:Data contructor'*/
+    /*Call from 'engine.js:Engine' once the renderer is initialized*/
+    //TODO
     async build(ctx /*renderer.js:Renderer.ctx*/) {
         let {vert, frag} = this;
         let shaders_dir = "data/shaders";
