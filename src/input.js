@@ -1,72 +1,4 @@
 
-//TODO keycodes table
-
-export const keybinds = {
-    left: [Keys.Q],
-    right: [Keys.D],
-    down: [Keys.S],
-    up: [Keys.Z],
-};
-
-export class Input {
-
-    constructor() {
-        this.keys = {};
-        this.actions = {};
-
-        for (let [name, keys] of Object.entries(keybinds)) {
-            this.actions[name] = new Action(this, keys);
-        }
-
-        document.addEventListener("keydown", (e)=>this.key_down(e));
-        document.addEventListener("keyup", (e)=>this.key_up(e));
-    }
-
-    key_down(e) { 
-        this.keys[e.keyCode] = true; 
-        //TODO use KeyState instead of bool.
-    } 
-
-    key_up(e) { 
-        this.keys[e.keyCode] = false; 
-    } 
-
-    get_action(name /*e.g. "left"*/) {
-        return this.actions[name]; 
-    }
-
-}
-
-class Action {
-
-    constructor(input /*Input*/, keybinds /*e.g. [Keys.W]*/) {
-        this.input = input;
-        this.keybinds = keybinds;
-    }
-
-    pressed() {
-        for (let keybind of this.keybinds) {
-            let keycode = keybind.charCodeAt(0);
-
-            if (this.input.keys[keycode]) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-}
-
-export class KeyState {
-
-    static PRESSED = 0;
-    static HELD = 1;
-    static RELEASED = 2;
-    static EMPTY = 3;
-
-}
-
 // Keycodes for "azerty" fr keyboard layout.
 // These map to the physical keys (qwerty:w is the same as azerty:z).
 export class Keys {
@@ -157,5 +89,72 @@ export class Keys {
     static NUMPAD_MIN = 109;
     static NUMPAD_ADD = 107;
     static NUMPAD_DOT = 110;
+
+}
+
+export class KeyState {
+
+    static PRESSED = 0;
+    static HELD = 1;
+    static RELEASED = 2;
+    static EMPTY = 3;
+
+}
+
+//TODO move it to a settings file in "../data".
+export const keybinds = {
+    left: [Keys.Q],
+    right: [Keys.D],
+    down: [Keys.S],
+    up: [Keys.Z],
+};
+
+// Handles states for all actions.
+export class Input {
+
+    constructor() {
+        this.keys = {};
+        this.actions = {};
+
+        for (let [name, keys] of Object.entries(keybinds)) {
+            this.actions[name] = new Action(this, keys);
+        }
+
+        document.addEventListener("keydown", (e)=>this.key_down(e));
+        document.addEventListener("keyup", (e)=>this.key_up(e));
+    }
+
+    key_down(e) { 
+        this.keys[e.keyCode] = true; 
+        //TODO use KeyState instead of bool.
+    } 
+
+    key_up(e) { 
+        this.keys[e.keyCode] = false; 
+    } 
+
+    get_action(name /*e.g. "left"*/) {
+        return this.actions[name]; 
+    }
+
+}
+
+// Stores the current state for an action.
+class Action {
+
+    constructor(input /*Input*/, keybinds /*e.g. [Keys.W]*/) {
+        this.input = input;
+        this.keybinds = keybinds;
+    }
+
+    pressed() {
+        for (let keybind of this.keybinds) {
+            if (this.input.keys[keybind]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 }
