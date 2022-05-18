@@ -124,7 +124,7 @@ def textures(data_txt):
     walk(f'{data}/textures', textures)
 
     for texture in textures:
-        lines.append(f'"{texture}"')
+        lines.append(f'new Texture("{texture}")')
 
     data_txt = data_txt.replace('//{{textures}}', strlist(lines, 2))
 

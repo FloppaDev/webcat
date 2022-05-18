@@ -1,5 +1,6 @@
 
 import {Shader} from "./shaders.js";
+import {Texture} from "./textures.js";
 
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";
@@ -19,7 +20,7 @@ export class Data {
     };
 
     textures = [
-        "grid.png"
+        new Texture("grid.png")
         //e.g.  "path"
     ];
 

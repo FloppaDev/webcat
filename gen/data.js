@@ -1,5 +1,6 @@
 
 import {Shader} from "./shaders.js";
+import {Texture} from "./textures.js";
 
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";
