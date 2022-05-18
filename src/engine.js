@@ -2,6 +2,7 @@
 import {Data} from "./data.js";
 import {Renderer} from "./renderer.js";
 import {World} from "./world.js";
+import {Input} from "./input.js";
 
 export class Engine {
 
@@ -9,6 +10,7 @@ export class Engine {
         this.data = new Data();
         this.renderer = new Renderer(this.data);
         this.world = new World();
+        this.input = new Input();
     }
 
 }
