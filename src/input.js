@@ -45,7 +45,7 @@ export class Keys {
     static U_GRAVE = 165;
     static KEYPAD_MUL = 170;
 
-    static LESSTHAN = 60;
+    static LESS_THAN = 60;
     static W = 87;
     static X = 88;
     static C = 67;
@@ -64,10 +64,10 @@ export class Keys {
 
     static INSERT = 45;
     static START = 36;
-    static PAGEUP = 33;
+    static PAGE_UP = 33;
     static DELETE = 46;
     static END = 35;
-    static PAGEDOWN = 34;
+    static PAGE_DOWN = 34;
 
     static LEFT = 37;
     static UP = 38;
@@ -120,8 +120,8 @@ export class Input {
             this.actions[name] = new Action(this, keys);
         }
 
-        document.addEventListener("keydown", (e)=>this.key_down(e));
-        document.addEventListener("keyup", (e)=>this.key_up(e));
+        document.addEventListener("keydown", (e)=>this.key_down.bind(this)(e));
+        document.addEventListener("keyup", (e)=>this.key_up.bind(this)(e));
     }
 
     key_down(e) { 

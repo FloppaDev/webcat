@@ -13,4 +13,9 @@ export class Engine {
         this.input = new Input();
     }
 
+    /*Call from main.js*/
+    start() {
+        this.renderer.start();
+    }
+
 }

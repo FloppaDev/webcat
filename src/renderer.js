@@ -12,8 +12,12 @@ export class Renderer {
         this.quad_vao = null;
         this.camera = new Camera();
 
-        try{ this.#load_context(); }
-        catch(e){ err(e); throw "Renderer failed to start."; }
+        try{ 
+            this.#load_context(); 
+        }catch(e){ 
+            err(e); 
+            throw "Renderer failed to start."; 
+        } 
 
         this.#create_quad_vbo();
     }
@@ -21,7 +25,7 @@ export class Renderer {
     /*Call from "engine.js:Engine"*/
     // Start rendering.
     start() {
-        window.requestAnimationFrame(this.#draw);
+        window.requestAnimationFrame(this.#draw.bind(this));
     }
 
     // Load OpenGl context.
@@ -77,7 +81,7 @@ export class Renderer {
 
     // Called each frame.
     #draw(t) {
-        let {ctx} = this;
+        let {ctx, delta, time} = this;
 
         // Update time infos.
         let t_sec = t / 1000;
@@ -88,7 +92,7 @@ export class Renderer {
         //TODO
 
         //TODO do that somewhere else {
-        let {camera, delta, time} = this;
+        let {camera} = this;
         let {canvas} = ctx;
 
         canvas.width = canvas.clientWidth;
@@ -125,7 +129,7 @@ export class Renderer {
         }
 
         // Request next frame.
-        window.requestAnimationFrame(this.draw);
+        window.requestAnimationFrame(this.#draw.bind(this));
     }
 
 }
