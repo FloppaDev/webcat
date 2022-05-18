@@ -4,14 +4,19 @@ window.onload = main;
 import {Engine} from "./engine.js";
 
 async function main() {
-    let engine = null;
+    let engine = new Engine();
+    let load = await engine.load();
 
-    try { 
-        engine = new Engine(); 
-    }catch(e) { 
-        err(e); 
-        throw "Failed to initialize engine."; 
-    } 
+    if(load.is_err()) {
+        load.log();
+        return;
+    }
 
     engine.start();
 }
+
+/*TODO do not use:
+    - class constructors
+    - throw
+    They are bad
+*/

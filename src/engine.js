@@ -6,9 +6,18 @@ import {Input} from "./input.js";
 
 export class Engine {
 
-    constructor() {
+    constructor() { }
+
+    async load() {
+        this.renderer = Renderer.init();
+
+        if(this.renderer.is_err()) {
+            return this.renderer.chain(new Error("Failed to initialize engine"));
+        }
+
         this.data = new Data();
-        this.renderer = new Renderer(this.data);
+        await this.data.load(this.renderer);
+
         this.world = new World();
         this.input = new Input();
     }

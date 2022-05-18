@@ -4,22 +4,25 @@ import {Camera} from "./camera.js";
 
 export class Renderer {
 
-    constructor(data /*data.js:Data*/) {
-        this.ctx = null;                 // OpenGl context.
-        this.time = 0;                   // Time in seconds since the engine started.
-        this.delta = 0;                  // Time between current and previous frame.
-        this.quad_vbo = null;            // Vertex buffer used for all draws.
-        this.quad_vao = null;
-        this.camera = new Camera();
+    static init = () => {
+        let renderer = new Renderer();
 
-        try{ 
-            this.#load_context(); 
-        }catch(e){ 
-            err(e); 
-            throw "Renderer failed to start."; 
+        renderer.ctx = null;                 // OpenGl context.
+        renderer.time = 0;                   // Time in seconds since the engine started.
+        renderer.delta = 0;                  // Time between current and previous frame.
+        renderer.quad_vbo = null;            // Vertex buffer used for all draws.
+        renderer.quad_vao = null;
+        renderer.camera = new Camera();
+
+        let load = renderer.#load_context();
+
+        if(load.is_err()) {
+            return load.chain(new Error("Renderer failed to start."));
         } 
 
-        this.#create_quad_vbo();
+        renderer.#create_quad_vbo();
+
+        return Result.ok(renderer);
     }
 
     /*Call from "engine.js:Engine"*/
@@ -40,7 +43,7 @@ export class Renderer {
         ctx.viewport(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         if (ctx === null) {
-            throw "Could not load WebGl.";
+            return Result.err(new Error("Could not load WebGl."));
         }
 
         this.ctx = ctx;

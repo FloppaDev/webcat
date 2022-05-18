@@ -29,4 +29,12 @@ export class Data {
         //e.g.  "path"
     ];
 
+    constructor() {
+
+    }
+
+    async load(renderer /*renderer.js:Renderer*/) {
+        //TODO 
+    }
+
 }
