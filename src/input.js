@@ -109,12 +109,22 @@ export const keybinds = {
     up: [Keys.Z],
 };
 
+export class Record {
+
+    constructor(key /*Keys*/, state /*KeyState*/) {
+        this.key = key;
+        this.state = state;
+    }
+
+}
+
 // Handles states for all actions.
 export class Input {
 
     constructor() {
         this.keys = {};
         this.actions = {};
+        this.buffer = [];
 
         for (let [name, keys] of Object.entries(keybinds)) {
             this.actions[name] = new Action(this, keys);
@@ -125,11 +135,20 @@ export class Input {
     }
 
     //TODO call before game loop.
+    // Refreshes states for all keys.
     refresh() {
         for(let key of this.keys) {
             if(key == KeyState.RELEASED) {
                 key = KeyState.EMPTY;
             }
+        }
+    }
+
+    //TODO call before game loop. After refresh?
+    // Apply inputs to key states.
+    apply() {
+        for(let record of buffer) {
+            this.keys[record.key] = record.state;
         }
     }
 
