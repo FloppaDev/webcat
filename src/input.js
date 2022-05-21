@@ -148,24 +148,32 @@ export class Input {
     // Apply inputs to key states.
     apply() {
         for(let record of buffer) {
-            this.keys[record.key] = record.state;
+            if(record.state == PRESSED) {
+                let current = this.keys[record.key];
+
+                if(current == KeyState.PRESSED || current == KeyState.HELD) {
+                    this.keys[record.key] = KeyState.HELD; 
+                }
+
+                else {
+                    this.keys[record.key] = KeyState.PRESSED; 
+                }        
+            }
+
+            else if(record.state == RELEASED) {
+                this.keys[e.keyCode] = KeyState.RELEASED; 
+            }
         }
     }
 
     key_down(e) { 
-        let current = this.keys[e.keyCode];
-
-        if(current == KeyState.PRESSED || current == KeyState.HELD) {
-            this.keys[e.keyCode] = KeyState.HELD; 
-        }
-
-        else {
-            this.keys[e.keyCode] = KeyState.PRESSED; 
-        }
+        let record = new Record(e.keyCode, KeyState.PRESSED);
+        this.buffer.push(record);
     } 
 
     key_up(e) { 
-        this.keys[e.keyCode] = KeyState.RELEASED; 
+        let record = new Record(e.keyCode, KeyState.RELEASED);
+        this.buffer.push(record);
     } 
 
     get_action(name /*e.g. "left"*/) {
