@@ -18,7 +18,7 @@ class Result {
         return new Result(Result.#ERR, [value]);
     }
 
-    constructor(ty /*e.g. prelude.js:OK*/, value) {
+    constructor(ty /*e.g. Result.OK*/, value) {
         this.ty = ty;
         this.value = value;
     }

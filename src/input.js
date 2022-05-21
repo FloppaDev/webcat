@@ -124,13 +124,29 @@ export class Input {
         document.addEventListener("keyup", (e)=>this.key_up.bind(this)(e));
     }
 
+    //TODO call before game loop.
+    refresh() {
+        for(let key of this.keys) {
+            if(key == KeyState.RELEASED) {
+                key = KeyState.EMPTY;
+            }
+        }
+    }
+
     key_down(e) { 
-        this.keys[e.keyCode] = true; 
-        //TODO use KeyState instead of bool.
+        let current = this.keys[e.keyCode];
+
+        if(current == KeyState.PRESSED || current == KeyState.HELD) {
+            this.keys[e.keyCode] = KeyState.HELD; 
+        }
+
+        else {
+            this.keys[e.keyCode] = KeyState.PRESSED; 
+        }
     } 
 
     key_up(e) { 
-        this.keys[e.keyCode] = false; 
+        this.keys[e.keyCode] = KeyState.RELEASED; 
     } 
 
     get_action(name /*e.g. "left"*/) {
