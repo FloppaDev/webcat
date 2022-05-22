@@ -1,6 +1,7 @@
 
 import {V2} from "./maths.js";
 import {Camera} from "./camera.js";
+import {Game} from "./game.js";
 
 export class Renderer {
 

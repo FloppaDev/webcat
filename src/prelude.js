@@ -32,7 +32,7 @@ class Result {
     }
 
     unwrap() {
-        return value;
+        return this.value;
     }
 
     log() {
