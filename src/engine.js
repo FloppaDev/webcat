@@ -9,11 +9,13 @@ export class Engine {
     constructor() { }
 
     async load() {
-        this.renderer = Renderer.init();
+        this.renderer = Renderer.init(this);
 
         if(this.renderer.is_err()) {
             return this.renderer.chain(new Error("Failed to initialize engine"));
         }
+
+        this.renderer = this.renderer.unwrap();
 
         this.data = new Data();
         await this.data.load(this.renderer);

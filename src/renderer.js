@@ -4,13 +4,14 @@ import {Camera} from "./camera.js";
 
 export class Renderer {
 
-    static init = () => {
+    static init = (engine /*engine.js:Engine*/) => {
         let renderer = new Renderer();
 
-        renderer.ctx = null;                 // OpenGl context.
-        renderer.time = 0;                   // Time in seconds since the engine started.
-        renderer.delta = 0;                  // Time between current and previous frame.
-        renderer.quad_vbo = null;            // Vertex buffer used for all draws.
+        renderer.engine = engine;           // Reference to the parent engine.
+        renderer.ctx = null;                // OpenGl context.
+        renderer.time = 0;                  // Time in seconds since the engine started.
+        renderer.delta = 0;                 // Time between current and previous frame.
+        renderer.quad_vbo = null;           // Vertex buffer used for all draws.
         renderer.quad_vao = null;
         renderer.camera = new Camera();
 
@@ -94,7 +95,8 @@ export class Renderer {
         time = t_sec;
 
         // Gameplay happens here.
-        //TODO
+        Game.update(this.engine);        
+        Game.late_update(this.engine);        
 
         //TODO do that somewhere else {
         let {camera} = this;
