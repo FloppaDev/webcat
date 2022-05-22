@@ -47,6 +47,8 @@ export class Renderer {
         }
 
         this.ctx = ctx;
+
+        return Result.ok({});
     }
 
     // Quad buffer, it will be used to render sprites.

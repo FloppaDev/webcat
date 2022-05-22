@@ -20,6 +20,8 @@ export class Engine {
 
         this.world = new World();
         this.input = new Input();
+
+        return Result.ok({});
     }
 
     /*Call from main.js*/
