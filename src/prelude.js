@@ -18,6 +18,26 @@ class Result {
         return new Result(Result.#ERR, [value]);
     }
 
+    // Chains results that are errors and returns a Result.
+    // Returns ok Result if there is no error. 
+    static merge_err = (results /*[Result]*/) => {
+        let r = Result.ok({});
+
+        for(let result of results) {
+            if(result.is_err()) {
+                if(r.is_ok()) {
+                    r = result;
+                }
+
+                else {
+                    r.chain(result.value);
+                }
+            }
+        }
+
+        return r;
+    }
+
     constructor(ty /*e.g. Result.OK*/, value) {
         this.ty = ty;
         this.value = value;

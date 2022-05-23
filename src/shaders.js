@@ -8,6 +8,7 @@ export class Shader {
     ) {
         this.vert = vert;
         this.frag = frag;
+        this.program = null;
         this.module = module;
         this.pipeline = new module.Pipeline();
         this.material = new module.Material();
@@ -15,7 +16,7 @@ export class Shader {
 
     // Builds a shader program from sources. 
     /*Call from 'engine.js:Engine' once the renderer is initialized*/
-    //TODO
+    /*Returns Result*/
     async build(ctx /*renderer.js:Renderer.ctx*/) {
         let {vert, frag} = this;
         let shaders_dir = "data/shaders";
@@ -31,29 +32,48 @@ export class Shader {
             .then(response => response.text())
             .then(text => frag_source = text);
 
-        let vert_stage = this.#build_stage(vert_source, ctx.VERTEX_SHADER);
-        let frag_stage = this.#build_stage(frag_source, ctx.FRAGMENT_SHADER);
+        let vert_stage = this.#build_stage(ctx, vert_source, ctx.VERTEX_SHADER);
+        let frag_stage = this.#build_stage(ctx, frag_source, ctx.FRAGMENT_SHADER);
 
-        program = this.#build_program(vert_stage, frag_stage);    
+        let stages_result = Result.merge_err([vert_stage, frag_stage]);
+        
+        if(stages_result.is_err()) {
+            return stages_result;
+        }
+
+        vert_stage = vert_stage.unwrap();
+        frag_stage = frag_stage.unwrap();
+        this.program = this.#build_program(ctx, vert_stage, frag_stage);    
+
+        if(this.program.is_err()) {
+            return this.program.chain(new Error(
+                "Could not build shader program."));
+        }
+
+        this.program = this.program.unwrap();
 
         ctx.deleteShader(vert_stage);
         ctx.deleteShader(frag_stage);
+
+        return Result.ok({});
     }
 
     // Compile shader from source.
+    /*Returns Result*/
     #build_stage(ctx /*renderer.js:Renderer.ctx*/, source, stage) {
         let shader = ctx.createShader(stage);
         ctx.shaderSource(shader, source);
         ctx.compileShader(shader);
 
         if (!ctx.getShaderParameter(shader, ctx.COMPILE_STATUS)) {
-            throw ctx.getShaderInfoLog(shader);
+            return Result.err(new Error(ctx.getShaderInfoLog(shader)));
         }
 
-        return shader;
+        return Result.ok(shader);
     }
 
     // Combine shaders into a program.
+    /*Returns Result*/
     #build_program(ctx /*renderer.js:Renderer.ctx*/, vert, frag) {
         let program = ctx.createProgram();
 
@@ -65,10 +85,10 @@ export class Shader {
         ctx.linkProgram(program);
 
         if (!ctx.getProgramParameter(program, ctx.LINK_STATUS)) {
-            throw ctx.getProgramInfoLog(program);
+            return Result.err(new Error(ctx.getProgramInfoLog(program)));
         }
 
-        return program;
+        return Result.ok(program);
     }
 
     bind(renderer /*renderer.js:Renderer*/) {
