@@ -43,6 +43,7 @@ export class Shader {
 
         vert_stage = vert_stage.unwrap();
         frag_stage = frag_stage.unwrap();
+        abort(new Error("uwu"), () => {log("Hewwo!")});
         this.program = this.#build_program(ctx, vert_stage, frag_stage);    
 
         if(this.program.is_err()) {

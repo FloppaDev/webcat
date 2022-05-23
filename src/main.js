@@ -14,9 +14,3 @@ async function main() {
 
     engine.start();
 }
-
-/*TODO do not use:
-    - class constructors
-    - throw
-    They are bad
-*/

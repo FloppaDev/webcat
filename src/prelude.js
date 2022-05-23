@@ -69,3 +69,13 @@ class Result {
     }
 
 }
+
+// Logs an error, optionnaly calls a function, then blocks the execution.
+const abort = (error /*Error*/, f /*null or function*/) => {
+    err("Unrecoverable error, execution stopped");
+    err(error);
+
+    f();
+
+    while(true) {}
+}
