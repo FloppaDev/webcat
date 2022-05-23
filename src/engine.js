@@ -19,7 +19,11 @@ export class Engine {
         this.renderer = this.renderer.unwrap();
 
         this.data = new Data();
-        await this.#load_data();
+        let load = await this.#load_data();
+
+        if(load.is_err()) {
+            return load.chain(new Error("Could not load game assets"));
+        }
 
         this.world = new World();
         this.input = new Input();
@@ -35,6 +39,10 @@ export class Engine {
 
         for(let [_name, shader] of Object.entries(data.shaders)) {
             results.push(await shader.build(renderer.ctx));
+        }
+
+        for(let [_name, texture] of Object.entries(data.textures)) {
+            results.push(await texture.load(renderer.ctx));
         }
 
         //TODO load other assets.

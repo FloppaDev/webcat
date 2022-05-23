@@ -8,9 +8,8 @@ export class Texture {
 
     // Creates a texture from an image.
     /*Call from 'engine.js:Engine' once the renderer is initiliazed*/
-    //TODO
     async load(ctx /*renderer.js:Renderer.ctx*/) {
-        let {path, gl_texture} = this.path;
+        let {path, gl_texture} = this;
         let textures_dir = "data/textures";
 
         let img = await this.#load_image(`${textures_dir}/${path}`); 
@@ -20,6 +19,8 @@ export class Texture {
 
         ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, img);
         //ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST); TODO fix
+
+        return Result.ok({});
     }
 
     // Load an image from url.
