@@ -15,7 +15,7 @@ export class Texture {
 
         let img = await this.#load_image(`${textures_dir}/${path}`); 
 
-        gl_texture = ctx.createTexture();
+        this.gl_texture = ctx.createTexture();
         ctx.bindTexture(ctx.TEXTURE_2D, gl_texture);
 
         ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, img);

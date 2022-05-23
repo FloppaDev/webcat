@@ -33,18 +33,4 @@ export class Data {
 
     }
 
-    // Load game assets.
-    /*Returns Result*/
-    async load(renderer /*renderer.js:Renderer*/) {
-        let results = [];
-
-        for(let [_name, shader] of Object.entries(this.shaders)) {
-            results.push(await shader.build(renderer.ctx));
-        }
-
-        //TODO load other assets.
-
-        return Result.merge_err(results);        
-    }
-
 }
