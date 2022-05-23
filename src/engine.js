@@ -53,7 +53,7 @@ export class Engine {
     // Start the engine and the game.
     /*Calls from main.js*/
     start() {
-        this.renderer.start();
+        this.renderer.start(this.world);
     }
 
 }

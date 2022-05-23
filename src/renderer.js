@@ -29,8 +29,8 @@ export class Renderer {
 
     /*Call from "engine.js:Engine"*/
     // Start rendering.
-    start() {
-        window.requestAnimationFrame(this.#draw.bind(this));
+    start(world /*world.js:World*/) {
+        window.requestAnimationFrame(((t) => this.#draw(world, t)).bind(this));
     }
 
     // Load OpenGl context.
@@ -87,7 +87,7 @@ export class Renderer {
     }
 
     // Called each frame.
-    #draw(t) {
+    #draw(world, t) {
         let {ctx, delta, time} = this;
 
         // Update time infos.
@@ -118,26 +118,25 @@ export class Renderer {
         ctx.clear(ctx.COLOR_BUFFER_BIT);
 
         // Draw all objects.
-        for (let [program, calls] of Object.entries(this.scene.draw_calls)) {
-            //TODO bind program
+        for (let [shader, calls] of Object.entries(world.draw_calls)) {
+            shader.bind(this);
 
             for (let [object, transforms] of Object.entries(calls)) {
                 let draw = [];
 
                 for (let transform of transform) {
                     if (transform.is_active) {
-                        //TODO
+                        //TODO culling
                         draw.push(transform);
                     }
                 }
 
-                //TODO bind ubos
                 //TODO draw object with all transforms.
             }
         }
 
         // Request next frame.
-        window.requestAnimationFrame(this.#draw.bind(this));
+        window.requestAnimationFrame(((t) => this.#draw(world, t)).bind(this));
     }
 
 }
