@@ -19,15 +19,15 @@ export class Data {
         //e.g.  shader_name: new Shader("x.vert", "x.frag", $shader_x)
     };
 
-    textures = [
+    textures = {
         //{{textures}}
-        //e.g.  "path"
-    ];
+        //e.g.  texture_name: new Texture("grid.png") 
+    };
 
-    sounds = [
+    sounds = {
         //{{sounds}}
-        //e.g.  "path"
-    ];
+        //e.g.  sound_name: new Sound("beep.wav")
+    };
 
     constructor() {
 
