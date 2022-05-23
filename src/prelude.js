@@ -5,6 +5,18 @@
 const log = console.log;
 const err = console.error;
 
+// Logs an error, optionnaly calls a function, then blocks the execution.
+const abort = (error /*Error*/, f /*null or function*/) => {
+    err("Unrecoverable error, execution stopped");
+    err(error);
+
+    if(g != null) {
+        f();
+    }
+
+    while(true) {}
+}
+
 class Result {
 
     static #OK = 0;
@@ -68,14 +80,4 @@ class Result {
         return this;
     }
 
-}
-
-// Logs an error, optionnaly calls a function, then blocks the execution.
-const abort = (error /*Error*/, f /*null or function*/) => {
-    err("Unrecoverable error, execution stopped");
-    err(error);
-
-    f();
-
-    while(true) {}
 }
