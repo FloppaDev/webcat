@@ -121,7 +121,7 @@ export class Renderer {
         for (let [shader, calls] of Object.entries(world.draw_calls)) {
             shader.bind(this);
 
-            for (let [object, transforms] of Object.entries(calls)) {
+            for (let [primitive, transforms] of Object.entries(calls)) {
                 let draw = [];
 
                 for (let transform of transform) {
@@ -131,7 +131,19 @@ export class Renderer {
                     }
                 }
 
-                //TODO draw object with all transforms.
+                let instance_buffer = new FloatArray(draw.length());
+
+                for(let i in draw) {
+                    let bytes = draw[i].bytes();
+
+                    for(let b in bytes) {
+                        instance_buffer[i * VertexBuffer.STRIDE + b] = bytes[b];
+                    }
+                }
+
+                //TODO bind instance_buffer.
+
+                shader.draw(this);
             }
         }
 

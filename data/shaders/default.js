@@ -10,7 +10,7 @@ export class Pipeline {
     // Record VAO attributes for the vertex shader.
     vao(
         renderer /*renderer.js:Renderer*/, 
-        program /*renderer.js:Renderer.shader_programs[x]*/
+        program /*shaders.js:Shader.program*/
     ) {
         let {ctx} = renderer;
 
@@ -24,8 +24,8 @@ export class Pipeline {
     // Bind UBOs for draw.
     ubos(
         renderer /*renderer.js:Renderer*/, 
-        program /*engine.renderer.shader_programs[x]*/,
-        material /*engine.materials[x]*/
+        program /*shaders.js:Shader.program*/,
+        material /*Material*/
     ) {
         let {ctx} = renderer;
 
@@ -33,10 +33,7 @@ export class Pipeline {
         ctx.bindTexture(ctx.TEXTURE_2D, material.texture);
     }
 
-    draw(
-        renderer /*renderer.js:Renderer*/,
-        shader_module /*Object.entries(data.js:Data.shaders)[x]*/
-    ) {
+    draw(renderer /*renderer.js:Renderer*/) {
         //TODO
     }
 

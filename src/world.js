@@ -1,18 +1,19 @@
 
-//TODO
-
 export class VertexBuffer {
 
-    constructor() {
-        //TODO
+    /*position V3, uv: V2*/
+    static STRIDE = 4*3 + 4*2;
+
+    constructor(vertices /*[[float; STRIDE]]*/) {
+        this.vertices = new Float32Array(vertices);
     }
 
 }
 
 export class IndexBuffer {
 
-    constructor() {
-        //TODO
+    constructor(indices /*[float]*/) {
+        this.indices = new Float32Array(indices);
     }
 
 }
@@ -33,8 +34,8 @@ export class Primitive {
 
 export class DrawCall {
 
-    constructor(primitive /*Primitive*/, transforms /*TODO*/) {
-        this.object = object;
+    constructor(primitive /*Primitive*/, transforms /*maths.js:Transform*/) {
+        this.primitive = primitive;
         this.transforms = transforms;
     }
 
