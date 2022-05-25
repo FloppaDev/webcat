@@ -50,11 +50,38 @@ export class Dispatch {
 
 }
 
+export class Node {
+
+    constructor(parent_node /*Node*/) {
+        this.transform = new Transform();
+        this.parent_node = parent_node;
+        this.child_nodes = [];
+        this.primitives = [];
+    }
+
+}
+
 export class World {
 
     constructor() {
-        this.draw_calls = [];
-        this.primitives = [];
+        this.loaded_scenes = {};
+        this.active_scenes = {};
+    }
+
+    load_scene(path /*"scenes/main.json"*/) {
+
+    }
+
+    unload_scene(path /*"scenes/main.json"*/) {
+
+    }
+
+    add_scene(path /*"scenes/main.json"*/) {
+
+    }
+
+    remove_scene(path /*"scenes/main.json"*/) {
+
     }
 
 }
