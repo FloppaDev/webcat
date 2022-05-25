@@ -1,5 +1,5 @@
 
-export class Scene {
+export class SceneScript {
 
     config = (objects /*TODO*/) => {
         let cube = objects["Cube"];
