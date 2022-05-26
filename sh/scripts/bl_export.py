@@ -6,11 +6,6 @@ import json
 def new(obj):
     return copy.deepcopy(obj)
 
-Vertex = {
-    'position': None,
-    'uv': None,
-}
-
 Primitive = {
     'indices': [],
 }
@@ -18,7 +13,8 @@ Primitive = {
 Mesh = {
     'materials': [],
     'primitives': [],
-    'vertices': [],
+    'v_positions': [],
+    'v_uvs': [],
 }
 
 Object = {
@@ -26,14 +22,12 @@ Object = {
 }
 
 Scene = {
-    'objects': [],
+    'objects': {},
 }
 
 out_scene = new(Scene)
 
 for ob in bpy.data.objects:
-    print('\n'+ob.name)
-
     if ob.type == 'MESH':
         mesh = ob.data
 
@@ -54,7 +48,8 @@ for ob in bpy.data.objects:
         vertices = mesh.vertices
         uv_map = mesh.uv_layers[0].data
 
-        out_object['mesh']['vertices'] = [None] * len(uv_map)
+        out_object['mesh']['v_positions'] = [None] * len(uv_map)
+        out_object['mesh']['v_uvs'] = [None] * len(uv_map)
 
         loop_triangles = mesh.loop_triangles
         loops = mesh.loops
@@ -66,17 +61,17 @@ for ob in bpy.data.objects:
             for loop in loop_triangle.loops:
                 vertex_loop = loops[loop]
 
-                index = vertex_loop.vertex_index
-                vertex = vertices[index] 
+                loop_index = vertex_loop.vertex_index
+                vertex = vertices[loop_index] 
+                index = vertex_loop.index
                 position = list(vertex.co)
                 uv = list(uv_map[index].uv)
 
                 out_primitive['indices'].append(index)
-                out_object['mesh']['vertices'][index] = new(Vertex)
-                out_object['mesh']['vertices'][index]['position'] = position
-                out_object['mesh']['vertices'][index]['uv'] = uv 
+                out_object['mesh']['v_positions'][index] = position
+                out_object['mesh']['v_uvs'][index] = uv 
 
-        out_scene['objects'].append(out_object)
+        out_scene['objects'][ob.name] = out_object
 
     else:
         pass
