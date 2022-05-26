@@ -1,7 +1,11 @@
 
 import bpy
+import sys
 import copy
 import json
+
+blend_path = sys.argv[-1]
+json_path = blend_path.rsplit('.', 1)[0] + '.json'
 
 def new(obj):
     return copy.deepcopy(obj)
@@ -18,20 +22,23 @@ Mesh = {
 }
 
 Object = {
+    'name': None,
     'mesh': None,
 }
 
 Scene = {
-    'objects': {},
+    'objects': [],
 }
 
 out_scene = new(Scene)
 
 for ob in bpy.data.objects:
+    out_object = new(Object)
+    out_object['name'] = ob.name
+
     if ob.type == 'MESH':
         mesh = ob.data
 
-        out_object = new(Object)
         out_object['mesh'] = new(Mesh)
 
         mesh.validate_material_indices()
@@ -71,10 +78,13 @@ for ob in bpy.data.objects:
                 out_object['mesh']['v_positions'][index] = position
                 out_object['mesh']['v_uvs'][index] = uv 
 
-        out_scene['objects'][ob.name] = out_object
-
     else:
         pass
         #TODO get object 
 
-print(json.dumps(out_scene, indent=4))
+    out_scene['objects'].append(out_object)
+
+output = json.dumps(out_scene, indent=4)
+
+with open(json_path, "w") as f:
+    f.write(output)
