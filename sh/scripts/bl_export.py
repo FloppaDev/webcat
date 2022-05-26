@@ -1,6 +1,15 @@
 
 import bpy
 
+class Primitive:
+    def __init__(self): 
+        self.indices = []
+
+class Mesh:
+    def __init__(self):
+        self.vertices = []
+        self.primitives = []
+
 for ob in bpy.data.objects:
     print (ob.name)
     try:

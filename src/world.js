@@ -21,13 +21,23 @@ export class IndexBuffer {
 export class Primitive {
 
     constructor(
-        vertex_buffer /*VertexBuffer*/, 
         index_buffer /*IndexBuffer*/, 
         material /*shaders:Shader.material*/
     ){
-        this.vertex_buffer = vertex_buffer;
         this.index_buffer = index_buffer;
         this.material = material;
+    }
+
+}
+
+export class Mesh {
+    
+    constructor(
+        vertex_buffer /*VertexBuffer*/,
+        primitives /*[Primitive]*/
+    ) {
+        this.vertex_buffer = vertex_buffer;
+        this.primitives = primitives;
     }
 
 }
