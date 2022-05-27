@@ -25,7 +25,7 @@ export class Engine {
             return load.chain(new Error("Could not load game assets"));
         }
 
-        this.world = new World();
+        this.world = new World(this.data);
         this.input = new Input();
 
         return Result.ok({});

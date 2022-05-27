@@ -71,9 +71,22 @@ export class Node {
 
 }
 
+export class Scene {
+
+    constructor(path /*e.g. test.json*/) {
+        this.path = path;
+    }
+
+    load() {
+
+    }
+
+}
+
 export class World {
 
-    constructor() {
+    constructor(data /*data.js:Data*/) {
+        this.data = data;
         this.loaded_scenes = {};
         this.active_scenes = {};
     }

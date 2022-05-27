@@ -1,6 +1,7 @@
 
 import {Shader} from "./shaders.js";
 import {Texture} from "./textures.js";
+import {Scene} from "./world.js";
 
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";
@@ -27,6 +28,11 @@ export class Data {
     sounds = {
         //{{sounds}}
         //e.g.  sound_name: new Sound("beep.wav")
+    };
+    
+    scenes = {
+        //{{scenes}}
+        //e.g.  scene_name: new Scene("test.json")
     };
 
     constructor() {
