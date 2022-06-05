@@ -144,9 +144,43 @@ def sounds(data_txt):
 
     return data_txt
 
+def scenes(data_txt):
+    files = []
+    scenes = {}
+    modules = []
+    lines = []
+
+    walk(f'{data}/scenes', files)
+
+    for file in files:
+        split = file.split('.')
+        name = split[0]
+        ext = split[1]
+
+        if ext == 'js' or ext == 'json':
+            if name not in scenes:
+                scenes[name] = {}
+            scenes[name][ext] = file
+
+    for key, value in scenes.items():
+        if scenes[key]['json'] == None:
+            raise Exception(f'Missing json file for scene {key}.')
+
+        if scenes[key]['js'] == None:
+            raise Exception(f'Missing js file for scene {key}.')
+        
+        lines.append(f'"{key}": new Scene("{scenes[key]["json"]}", $scene_{key})')
+        modules.append(f'import * as $scene_{key} from "../data/scenes/{key}.js";')
+
+    data_txt = data_txt.replace('//{{scene_modules}}', strlist(modules, 2))
+    data_txt = data_txt.replace('//{{scenes}}', strlist(lines, 2))
+
+    return data_txt
+
 data_txt = shaders(data_txt)
 data_txt = textures(data_txt)
 data_txt = sounds(data_txt)
+data_txt = scenes(data_txt)
 
 with open(f'{root}/src/data.js', "w") as file:
     file.write(data_txt)
