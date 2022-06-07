@@ -1,6 +1,4 @@
 
-#TODO rework formatting of generated code.
-
 import pathlib
 import re
 import os
@@ -74,7 +72,6 @@ def add_shader(paths, progs, modules):
                 del paths[i]
             elif ext == 'js':
                 module = f'$shader_{name}'
-                #TODO replace '/' with '__' for example.
                 del paths[i]
 
         i -= 1
@@ -92,7 +89,6 @@ def add_shader(paths, progs, modules):
         '"%s": new Shader("%s", "%s", %s)' % (
             current_name, vert, frag, module))
 
-    #TODO replace '/' with '__' for example.
     modules.append(
         f'import * as $shader_{name} from "../data/shaders/{name}.js";')
 
@@ -109,7 +105,7 @@ def shaders(data_txt):
     title('Shaders')
     pprint(progs)
 
-    title('Modules')
+    title('Shader modules')
     pprint(modules)
         
     data_txt = data_txt.replace('//{{shaders}}', strlist(progs, 2))
@@ -127,6 +123,9 @@ def textures(data_txt):
         name = texture.split('.')[0]
         lines.append(f'"{name}": new Texture("{texture}")')
 
+    title('Textures')
+    pprint(lines)
+
     data_txt = data_txt.replace('//{{textures}}', strlist(lines, 2))
 
     return data_txt
@@ -139,6 +138,9 @@ def sounds(data_txt):
 
     for sound in sounds:
         lines.append(f'"{sound}"')
+
+    title('Sounds')
+    pprint(lines)
 
     data_txt = data_txt.replace('//{{sounds}}', strlist(lines, 2))
 
@@ -171,6 +173,12 @@ def scenes(data_txt):
         
         lines.append(f'"{key}": new Scene("{scenes[key]["json"]}", $scene_{key})')
         modules.append(f'import * as $scene_{key} from "../data/scenes/{key}.js";')
+
+    title('Scenes')
+    pprint(lines)
+
+    title('Scene modules')
+    pprint(modules)
 
     data_txt = data_txt.replace('//{{scene_modules}}', strlist(modules, 2))
     data_txt = data_txt.replace('//{{scenes}}', strlist(lines, 2))

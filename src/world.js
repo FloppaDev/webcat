@@ -73,8 +73,9 @@ export class Node {
 
 export class Scene {
 
-    constructor(path /*e.g. test.json*/) {
+    constructor(path /*e.g. test.json*/, module /*TODO*/) {
         this.path = path;
+        this.module = module;
     }
 
     load() {
