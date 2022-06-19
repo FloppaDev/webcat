@@ -44,7 +44,10 @@ export class Mesh {
 
 export class DrawCall {
 
-    constructor(primitive /*Primitive*/, transforms /*maths.js:Transform*/) {
+    constructor(
+        primitive /*Primitive*/, 
+        transforms /*maths.js:Transform*/
+    ) {
         this.primitive = primitive;
         this.transforms = transforms;
     }
@@ -53,7 +56,10 @@ export class DrawCall {
 
 export class Dispatch {
 
-    constructor(shader /*shaders.js:Shader*/, draw_call /*DrawCall*/) {
+    constructor(
+        shader /*shaders.js:Shader*/, 
+        draw_call /*DrawCall*/
+    ) {
         this.shader = shader;
         this.draw_call = draw_call;
     }
@@ -73,7 +79,10 @@ export class Node {
 
 export class Scene {
 
-    constructor(path /*e.g. test.json*/, module /*TODO*/) {
+    constructor(
+        path /*e.g. test.json*/, 
+        module /*data/scenes/x.js*/
+    ) {
         this.path = path;
         this.module = module;
     }
@@ -88,24 +97,48 @@ export class World {
 
     constructor(data /*data.js:Data*/) {
         this.data = data;
-        this.loaded_scenes = {};
-        this.active_scenes = {};
+        this.loaded_scenes = [];
+        this.active_scenes = [];
     }
 
-    load_scene(path /*"scenes/main.json"*/) {
+    load_scene(name /*"data.js:Data.scenes[name]"*/) {
+        if(this.loaded_scenes.includes(name)) {
+            return Result.err(new Error(`Scene '${name}' already loaded.`));
+        }
 
+        let scene = this.data.scenes[name];
+
+        if(scene == undefined) {
+            return Result.err(new Error(`Scene '${name}' not found.`));
+        }
+
+        let load = scene.load();
+
+        if(load.is_err()) {
+            return load.chain(new Error(`Failed to load scene '${name}'.`));
+        }
+
+        this.loaded_scenes.push(name);
     }
 
-    unload_scene(path /*"scenes/main.json"*/) {
-
+    unload_scene(name /*"data.js:Data.scenes[name]"*/) {
+        //TODO
     }
 
-    add_scene(path /*"scenes/main.json"*/) {
-
+    activate_scene(name /*"data.js:Data.scenes[name]"*/) {
+        if(this.active_scenes.includes(name)) {
+            return Result.err(new Error(`Scene '${name}' already active.`));
+        }
+        
+        this.active_scenes.push(name);
     }
 
-    remove_scene(path /*"scenes/main.json"*/) {
+    deactivate_scene(name /*"data.js:Data.scenes[name]"*/) {
+        this.active_scenes = this.active_scenes(s => s != name);
+    }
 
+    get_active_scenes() {
+        return this.active_scenes.map(s => this.data.scenes[s]);
     }
 
 }

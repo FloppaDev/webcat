@@ -118,32 +118,37 @@ export class Renderer {
         ctx.clear(ctx.COLOR_BUFFER_BIT);
 
         // Draw all objects.
-        for (let [shader, calls] of Object.entries(world.draw_calls)) {
-            shader.bind(this);
+        for(let scene of world.get_active_scenes()) {
+            for(let dispatch of scene.dispatches) {
+                let {shader, draw_call} = dispatch;
+                let {primitive, transforms} = draw_call;
 
-            for (let [primitive, transforms] of Object.entries(calls)) {
-                let draw = [];
+                shader.bind(this);
 
-                for (let transform of transform) {
-                    if (transform.is_active) {
-                        //TODO culling
-                        draw.push(transform);
+                for (let transform of transforms) {
+                    let draw = [];
+
+                    for (let transform of transforms) {
+                        if (transform.is_active) {
+                            //TODO culling
+                            draw.push(transform);
+                        }
                     }
-                }
 
-                let instance_buffer = new FloatArray(draw.length());
+                    let instance_buffer = new FloatArray(draw.length());
 
-                for(let i in draw) {
-                    let bytes = draw[i].bytes();
+                    for(let i in draw) {
+                        let bytes = draw[i].bytes();
 
-                    for(let b in bytes) {
-                        instance_buffer[i * VertexBuffer.STRIDE + b] = bytes[b];
+                        for(let b in bytes) {
+                            instance_buffer[i * VertexBuffer.STRIDE + b] = bytes[b];
+                        }
                     }
+
+                    //TODO bind instance_buffer.
+
+                    shader.draw(this);
                 }
-
-                //TODO bind instance_buffer.
-
-                shader.draw(this);
             }
         }
 
