@@ -91,14 +91,14 @@ export class Shader {
         return Result.ok(program);
     }
 
-    bind(renderer /*renderer.js:Renderer*/) {
+    bind_shader(renderer /*renderer.js:Renderer*/) {
         let {ctx} = renderer;
+        let {pipeline, program} = this;
 
-        ctx.useProgram(/*TODO*/);
-
-        //TODO bind uniforms.
-
-        //TODO bind VAO.
+        ctx.useProgram(program);
+        log(this);
+        pipeline.ubos(); 
+        pipeline.vao(); 
     }
 
     draw(renderer /*renderer.js:Renderer*/) {

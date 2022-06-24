@@ -12,5 +12,19 @@ async function main() {
         return;
     }
 
+    load = engine.world.load_scene("test");
+
+    if(load.is_err()) {
+        load.log();
+        return;
+    }
+
+    load = engine.world.activate_scene("test");
+
+    if(load.is_err()) {
+        load.log();
+        return;
+    }
+
     engine.start();
 }

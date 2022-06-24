@@ -123,7 +123,7 @@ export class Renderer {
                 let {shader, draw_call} = dispatch;
                 let {primitive, transforms} = draw_call;
 
-                shader.bind(this);
+                shader.bind_shader(this);
 
                 for (let transform of transforms) {
                     let draw = [];

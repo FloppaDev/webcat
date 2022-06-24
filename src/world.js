@@ -85,6 +85,7 @@ export class Scene {
     ) {
         this.path = path;
         this.module = module;
+        this.nodes = [];
     }
 
     load() {
