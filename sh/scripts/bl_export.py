@@ -5,7 +5,7 @@ import copy
 import json
 
 blend_path = sys.argv[-1]
-json_path = blend_path.rsplit('.', 1)[0] + '.json'
+json_path = blend_path.rsplit('.', 1)[0] + '.json.js'
 
 def new(obj):
     return copy.deepcopy(obj)
@@ -84,7 +84,8 @@ for ob in bpy.data.objects:
 
     out_scene['objects'].append(out_object)
 
-output = json.dumps(out_scene, indent=4)
+js_prefix = 'let data = '
+output = js_prefix + json.dumps(out_scene, indent=4)
 
 with open(json_path, "w") as f:
     f.write(output)

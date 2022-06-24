@@ -171,8 +171,9 @@ def scenes(data_txt):
         if scenes[key]['js'] == None:
             raise Exception(f'Missing js file for scene {key}.')
         
-        lines.append(f'"{key}": new Scene("{scenes[key]["json"]}", $scene_{key})')
+        lines.append(f'"{key}": new Scene($scn_data_{key}, $scene_{key})')
         modules.append(f'import * as $scene_{key} from "../data/scenes/{key}.js";')
+        modules.append(f'import * as $scn_data_{key} from "../data/scenes/{key}.json.js";')
 
     title('Scenes')
     pprint(lines)
@@ -180,7 +181,7 @@ def scenes(data_txt):
     title('Scene modules')
     pprint(modules)
 
-    data_txt = data_txt.replace('//{{scene_modules}}', strlist(modules, 2))
+    data_txt = data_txt.replace('//{{scene_modules}}', '\n'.join(modules))
     data_txt = data_txt.replace('//{{scenes}}', strlist(lines, 2))
 
     return data_txt

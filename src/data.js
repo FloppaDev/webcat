@@ -7,6 +7,7 @@ import {Scene} from "./world.js";
 //e.g.  import * as $material_default from "../data/materials/default.js";
 
 import * as $scene_test from "../data/scenes/test.js";
+import * as $scn_data_test from "../data/scenes/test.json.js";
 
 //{{script_modules}}
 
@@ -31,7 +32,7 @@ export class Data {
     };
     
     scenes = {
-        "test": new Scene("test.json", $scene_test)
+        "test": new Scene($scn_data_test, $scene_test)
         //e.g.  scene_name: new Scene("test.json")
     };
 
