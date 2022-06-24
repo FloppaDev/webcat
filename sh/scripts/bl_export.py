@@ -84,7 +84,7 @@ for ob in bpy.data.objects:
 
     out_scene['objects'].append(out_object)
 
-js_prefix = 'let data = '
+js_prefix = 'export const DATA = '
 output = js_prefix + json.dumps(out_scene, indent=4)
 
 with open(json_path, "w") as f:

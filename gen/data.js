@@ -32,7 +32,7 @@ export class Data {
     
     scenes = {
         //{{scenes}}
-        //e.g.  scene_name: new Scene("test.json")
+        //e.g.  scene_name: new Scene($scn_data_test, $scene_test)
     };
 
     constructor() {

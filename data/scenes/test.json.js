@@ -1,4 +1,4 @@
-let data = {
+export const DATA = {
     "objects": [
         {
             "name": "Camera",

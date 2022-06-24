@@ -80,16 +80,16 @@ export class Node {
 export class Scene {
 
     constructor(
-        path /*e.g. test.json*/, 
-        module /*data/scenes/x.js*/
+        data_module /*data/scenes/x.json.js*/,
+        script_module /*data/scenes/x.js*/
     ) {
-        this.path = path;
-        this.module = module;
+        this.data_module = data_module;
+        this.script_module = script_module;
         this.nodes = [];
     }
 
     load() {
-
+        log(this.data_module.DATA);
     }
 
 }
