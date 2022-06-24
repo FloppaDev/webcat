@@ -1,4 +1,6 @@
 
+import {Transform} from "./maths.js";
+
 export class VertexBuffer {
 
     /*position V3, uv: V2*/
@@ -68,11 +70,13 @@ export class Dispatch {
 
 export class Node {
 
-    constructor(parent_node /*Node*/) {
+    //TODO parents are not exported.
+    constructor(name /*string*/, parent_node /*Node*/) {
+        this.name = name;
         this.transform = new Transform();
         this.parent_node = parent_node;
         this.child_nodes = [];
-        this.primitives = [];
+        this.mesh = null;
     }
 
 }
@@ -89,7 +93,42 @@ export class Scene {
     }
 
     load() {
-        log(this.data_module.DATA);
+        const {DATA} = this.data_module;
+        let {nodes} = this;
+
+        for(let {name, mesh} of DATA.objects) {
+            let node = new Node(null);
+
+            if(!mesh) {
+                nodes.push(name, node);
+                continue;
+            }
+
+            let vertices = [];
+
+            for(let pos of mesh.v_positions) {
+                vertices.push(...pos);
+            }
+
+            for(let uv of mesh.v_uvs) {
+                vertices.push(...uv);
+            }
+
+            let vb = new VertexBuffer(vertices);
+            let primitives = [];
+
+            for(let primitive of mesh.primitives) {
+                let ib = new IndexBuffer(primitive.indices);
+                //TODO material indices are not exported yet.
+                primitives.push(new Primitive(ib, 0/*TODO primitive.material*/));
+            }
+
+            node.mesh = new Mesh(vb, primitives); 
+
+            nodes.push(name, node);
+        }
+
+        log(nodes);
     }
 
 }
