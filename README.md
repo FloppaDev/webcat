@@ -1,5 +1,10 @@
 # bollcat
 
+A 2d platform game written in js.  
+The engine is made from scratch using WebGl2 for rendering
+and Blender as a level editor.  
+Python is used to export levels data and make all the assets available to the game.
+
 ### Sources
 - WebGl docs: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
 - WebGl spec: https://www.khronos.org/registry/webgl/specs/latest/1.0/
