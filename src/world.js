@@ -90,6 +90,7 @@ export class Scene {
         this.data_module = data_module;
         this.script_module = script_module;
         this.nodes = [];
+        this.dispatches = [];//TODO write dispatches
     }
 
     load() {
@@ -127,8 +128,6 @@ export class Scene {
 
             nodes.push(name, node);
         }
-
-        log(nodes);
     }
 
 }
@@ -152,13 +151,10 @@ export class World {
             return Result.err(new Error(`Scene '${name}' not found.`));
         }
 
-        let load = scene.load();
-
-        if(load.is_err()) {
-            return load.chain(new Error(`Failed to load scene '${name}'.`));
-        }
-
+        scene.load();
         this.loaded_scenes.push(name);
+
+        return Result.ok();
     }
 
     unload_scene(name /*"data.js:Data.scenes[name]"*/) {
@@ -171,6 +167,8 @@ export class World {
         }
         
         this.active_scenes.push(name);
+
+        return Result.ok();
     }
 
     deactivate_scene(name /*"data.js:Data.scenes[name]"*/) {
