@@ -1,6 +1,7 @@
 # bollcat
 
 A 2d platform game written in js.  
+  
 The engine is made from scratch using WebGl2 for rendering
 and Blender as a level editor.  
 Python is used to export levels data and make all the assets available to the game.
@@ -28,7 +29,7 @@ Start a local server that will refresh generated code and assets on page reload:
 ./sh/start.sh
 ```
   
-Level editing happens in Blender, data is them exported using `./sh/export_scene.sh`.
+Level editing happens in Blender, data is then exported using `./sh/export_scene.sh`.
 
 ### Sources
 
@@ -44,8 +45,8 @@ Level editing happens in Blender, data is them exported using `./sh/export_scene
 - bad practices: 
     - https://webgl2fundamentals.org/webgl/lessons/webgl-anti-patterns.html
 
-- VAOs: https
-    - ://medium.com/@david.komer/dude-wheres-my-data-vao-s-in-webgl-896631783895
+- VAOs: 
+    - https://medium.com/@david.komer/dude-wheres-my-data-vao-s-in-webgl-896631783895
 
 - WebGl1 triangle: 
     - https://aralroca.com/blog/first-steps-in-webgl#create-program-from-shaders
