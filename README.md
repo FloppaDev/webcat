@@ -1,8 +1,8 @@
 # webcat
 
-A 2d platform game written in js.  
+A 2d game engine written in js.  
   
-The engine is made from scratch using WebGl2 for rendering
+It is made from scratch using WebGL2 for rendering
 and Blender as a level editor.  
 Python is used to export levels data and make all the assets available to the game.
 
