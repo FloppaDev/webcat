@@ -1,4 +1,4 @@
-# bollcat
+# webcat
 
 A 2d platform game written in js.  
   
