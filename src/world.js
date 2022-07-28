@@ -32,11 +32,24 @@ export class Primitive {
 
 }
 
+export class Box {
+
+    constructor(
+        half_width /*float*/,
+        half_height /*float*/,
+    ) {
+        this.half_width = half_width;
+        this.half_height = half_height;
+    }
+
+}
+
 export class Mesh {
     
     constructor(
         vertex_buffer /*VertexBuffer*/,
-        primitives /*[Primitive]*/
+        primitives /*[Primitive]*/,
+        bounds /*Box*/,
     ) {
         this.vertex_buffer = vertex_buffer;
         this.primitives = primitives;
@@ -93,6 +106,14 @@ export class Scene {
         this.dispatches = [];//TODO write dispatches
     }
 
+    update(camera /*camera.js/Camera*/) {
+        this.dispatches = [];
+
+        for(let node of this.node) {
+
+        }
+    }
+
     load() {
         const {DATA} = this.data_module;
         let {nodes} = this;
@@ -138,6 +159,12 @@ export class World {
         this.data = data;
         this.loaded_scenes = [];
         this.active_scenes = [];
+    }
+
+    update(camera /*camera.js/Camera*/) {
+        for(let scene of this.active_scenes) {
+            scene.update(camera);
+        }
     }
 
     load_scene(name /*"data.js:Data.scenes[name]"*/) {

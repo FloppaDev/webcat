@@ -95,6 +95,9 @@ export class Renderer {
         delta = t_sec - time;
         time = t_sec;
 
+        // Generate draw calls
+        world.update();
+
         // Gameplay happens here.
         Game.update(this.engine);        
         Game.late_update(this.engine);        
