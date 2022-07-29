@@ -32,14 +32,23 @@ export class Primitive {
 
 }
 
-export class Box {
+export class Bounds {
 
     constructor(
-        half_width /*float*/,
-        half_height /*float*/,
+        left /*float*/,
+        right /*float*/,
+        down /*float*/,
+        up /*float*/,
     ) {
-        this.half_width = half_width;
-        this.half_height = half_height;
+        this.left = left;
+        this.right = right;
+        this.down = down;
+        this.up = up;
+    }
+
+    is_visible(camera /*camera.js/Camera*/) {
+        return true;
+        //TODO clipping
     }
 
 }
@@ -53,6 +62,11 @@ export class Mesh {
     ) {
         this.vertex_buffer = vertex_buffer;
         this.primitives = primitives;
+        this.bounds = bounds;
+    }
+
+    is_visible(camera /*camera.js/Camera*/) {
+        return this.bounds.is_visible(camera);
     }
 
 }
@@ -61,10 +75,10 @@ export class DrawCall {
 
     constructor(
         primitive /*Primitive*/, 
-        transforms /*maths.js:Transform*/
+        transform /*maths.js:Transform*/
     ) {
         this.primitive = primitive;
-        this.transforms = transforms;
+        this.transform = transform;
     }
 
 }
@@ -90,6 +104,7 @@ export class Node {
         this.parent_node = parent_node;
         this.child_nodes = [];
         this.mesh = null;
+        //TODO material
     }
 
 }
@@ -103,14 +118,22 @@ export class Scene {
         this.data_module = data_module;
         this.script_module = script_module;
         this.nodes = [];
-        this.dispatches = [];//TODO write dispatches
+        this.dispatches = [];
     }
 
     update(camera /*camera.js/Camera*/) {
         this.dispatches = [];
 
-        for(let node of this.node) {
+        for(let node of this.nodes) {
+            if(!node.mesh) {
+                continue;
+            }
 
+            if(node.mesh.is_visible(camera)) {
+                //TODO
+                // get shader from material
+                // make draw_call from primitive and tranform
+            }
         }
     }
 
@@ -128,10 +151,33 @@ export class Scene {
 
             let vertices = [];
 
+            let left = 0;
+            let right = 0;
+            let down = 0; let up = 0;
+
             for(let pos of mesh.v_positions) {
                 vertices.push(...pos);
+
+                if(pos[0] < left) {
+                    left = pos[0];
+                }
+
+                else if(pos[0] > right) {
+                    right = pos[0];
+                }
+
+                if(pos[3] < down) {
+                    down = pos[3];
+                }
+
+                else if(pos[3] > up) {
+                    up = pos[3];
+                }
             }
 
+            let bounds = new Bounds(left, right, down, up);
+
+            //TODO i forgor why uvs go into vertices
             for(let uv of mesh.v_uvs) {
                 vertices.push(...uv);
             }
@@ -145,7 +191,7 @@ export class Scene {
                 primitives.push(new Primitive(ib, 0/*TODO primitive.material*/));
             }
 
-            node.mesh = new Mesh(vb, primitives); 
+            node.mesh = new Mesh(vb, primitives, bounds); 
 
             nodes.push(name, node);
         }
@@ -156,14 +202,14 @@ export class Scene {
 export class World {
 
     constructor(data /*data.js:Data*/) {
-        this.data = data;
-        this.loaded_scenes = [];
-        this.active_scenes = [];
+        this.data = data;           // data.js:Data
+        this.loaded_scenes = [];    // [str]            Loaded scenes are ready for activation
+        this.active_scenes = [];    // [str]            Active scenes are rendered
     }
 
     update(camera /*camera.js/Camera*/) {
         for(let scene of this.active_scenes) {
-            scene.update(camera);
+            this.data.scenes[scene].update(camera);
         }
     }
 
