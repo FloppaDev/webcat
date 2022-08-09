@@ -1,7 +1,7 @@
 
 import {Shader} from "./shaders.js";
 import {Texture} from "./textures.js";
-import {Scene} from "./world.js";
+import {Scene} from "./scene.js";
 
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";
@@ -33,6 +33,10 @@ export class Data {
     scenes = {
         //{{scenes}}
         //e.g.  scene_name: new Scene($scn_data_test, $scene_test)
+    };
+
+    configs = {
+        //{{configs}}
     };
 
     constructor() {

@@ -1,5 +1,6 @@
 
 import {Transform} from "./maths.js";
+import {Mesh} from "./mesh.js";
 
 export class Node {
 
@@ -36,7 +37,7 @@ export class Scene {
 
             if(node.mesh.is_visible(camera)) {
                 //TODO
-                let material = node.material;
+                // get material from primitive
                 // get shader from material
                 // make draw_call from primitive and tranform
             }
@@ -55,49 +56,7 @@ export class Scene {
                 continue;
             }
 
-            let vertices = [];
-
-            let left = 0;
-            let right = 0;
-            let down = 0; let up = 0;
-
-            for(let pos of mesh.v_positions) {
-                vertices.push(...pos);
-
-                if(pos[0] < left) {
-                    left = pos[0];
-                }
-
-                else if(pos[0] > right) {
-                    right = pos[0];
-                }
-
-                if(pos[3] < down) {
-                    down = pos[3];
-                }
-
-                else if(pos[3] > up) {
-                    up = pos[3];
-                }
-            }
-
-            let bounds = new Bounds(left, right, down, up);
-
-            //TODO i forgor why uvs go into vertices
-            for(let uv of mesh.v_uvs) {
-                vertices.push(...uv);
-            }
-
-            let vb = new VertexBuffer(vertices);
-            let primitives = [];
-
-            for(let primitive of mesh.primitives) {
-                let ib = new IndexBuffer(primitive.indices);
-                //TODO material indices are not exported yet.
-                primitives.push(new Primitive(ib, 0/*TODO primitive.material*/));
-            }
-
-            node.mesh = new Mesh(vb, primitives, bounds); 
+            node.mesh = Mesh.from_json(mesh); 
 
             nodes.push(name, node);
         }
