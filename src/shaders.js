@@ -1,4 +1,6 @@
 
+import {Transform} from "./maths.js";
+
 export class Shader {
 
     constructor(
@@ -103,6 +105,41 @@ export class Shader {
 
     draw(renderer /*renderer.js:Renderer*/) {
         this.pipeline.draw(renderer);
+    }
+
+}
+
+export class Material {
+
+    constructor(
+        data /*data.js:Data*/,
+        name /*e.g 'default'*/,
+    ) {
+        this.material_module = data.materials[name];
+    }
+
+}
+
+export class DrawCall {
+
+    constructor(
+        primitive /*Primitive*/, 
+        transform /*maths.js:Transform*/
+    ) {
+        this.primitive = primitive;
+        this.transform = transform;
+    }
+
+}
+
+export class Dispatch {
+
+    constructor(
+        shader /*shaders.js:Shader*/, 
+        draw_call /*DrawCall*/
+    ) {
+        this.shader = shader;
+        this.draw_call = draw_call;
     }
 
 }

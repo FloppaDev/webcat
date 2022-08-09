@@ -24,3 +24,24 @@ export class Transform {
     }
 
 }
+
+export class Bounds {
+
+    constructor(
+        left /*float*/,
+        right /*float*/,
+        down /*float*/,
+        up /*float*/,
+    ) {
+        this.left = left;
+        this.right = right;
+        this.down = down;
+        this.up = up;
+    }
+
+    is_visible(camera /*camera.js/Camera*/) {
+        return true;
+        //TODO clipping
+    }
+
+}
