@@ -47,7 +47,10 @@ for ob in bpy.data.objects:
         materials = mesh.materials
 
         for material in materials:
-            out_object['mesh']['materials'].append(material.name)
+            if material.name == 'Material' or material.name.startswith('Material.'):
+                out_object['mesh']['materials'].append('default')
+            else:
+                out_object['mesh']['materials'].append(material.name)
         
         for i in range(0, len(materials)):
             out_object['mesh']['primitives'].append(new(Primitive))
