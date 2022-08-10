@@ -109,37 +109,17 @@ export class Shader {
 
 }
 
-export class Material {
-
-    constructor(
-        data /*data.js:Data*/,
-        name /*e.g 'default'*/,
-    ) {
-        this.material_module = data.materials[name];
-    }
-
-}
-
 export class DrawCall {
 
     constructor(
-        primitive /*Primitive*/, 
-        transform /*maths.js:Transform*/
-    ) {
-        this.primitive = primitive;
-        this.transform = transform;
-    }
-
-}
-
-export class Dispatch {
-
-    constructor(
         shader /*shaders.js:Shader*/, 
-        draw_call /*DrawCall*/
+        primitive /*Primitive*/, 
+        transforms /*maths.js:Transform*/
     ) {
         this.shader = shader;
-        this.draw_call = draw_call;
+        this.primitive = primitive;
+        this.transforms = transforms;
     }
 
 }
+

@@ -24,22 +24,33 @@ export class Scene {
         this.data_module = data_module;
         this.script_module = script_module;
         this.nodes = [];
-        this.dispatches = [];
+        this.meshes = [];
+        this.draw_calls = [];
     }
 
     update(camera /*camera.js/Camera*/) {
-        this.dispatches = [];
+        this.draw_calls = [];
 
-        for(let node of this.nodes) {
-            if(!node.mesh) {
+        for(let mesh of this.meshes) {
+            if(!mesh) {
                 continue;
             }
 
-            if(node.mesh.is_visible(camera)) {
-                //TODO
-                // get material from primitive
-                // get shader from material
-                // make draw_call from primitive and tranform
+            if(mesh.is_visible(camera)) {
+                for(let primitive of mesh.primitives) {
+                    let {material_module} = primitive;
+                    let {shader} = material_module;
+
+                    let transforms = [];
+
+                    //TODO support instancing when exporting from blender.
+                    for(let node of mesh.nodes) {
+                        tranforms.push(node.transform);
+                    }
+
+                    let draw_call = new DrawCall(shader, primitive, transforms);
+                    this.draw_calls.push(draw_call);
+                }
             }
         }
     }
@@ -56,8 +67,7 @@ export class Scene {
                 continue;
             }
 
-            node.mesh = Mesh.from_json(mesh); 
-
+            node.mesh = Mesh.from_json(node, mesh); 
             nodes.push(name, node);
         }
     }

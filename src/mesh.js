@@ -24,12 +24,10 @@ export class Primitive {
 
     constructor(
         index_buffer /*IndexBuffer*/, 
-        material /*shaders.js:Shader.material*/
+        material_module /*shaders.js:Shader.material*/
     ){
         this.index_buffer = index_buffer;
-        //TODO wrap material module in shader.js:Material
-        // and do the same for all module types.
-        this.material = material;
+        this.material_module = material_module;
     }
 
 }
@@ -37,6 +35,7 @@ export class Primitive {
 export class Mesh {
     
     constructor(
+        node /*scene.js:Node*/,
         vertex_buffer /*VertexBuffer*/,
         primitives /*[Primitive]*/,
         bounds /*Box*/,
@@ -47,7 +46,8 @@ export class Mesh {
     }
 
     static from_json = (
-        mesh /*TODO*/,
+        node /*scene.js:Node*/,
+        mesh /*TODO mesh object from python*/,
     ) => {
         let vertices = [];
 
@@ -91,7 +91,7 @@ export class Mesh {
             primitives.push(new Primitive(ib, 0/*TODO primitive.material*/));
         }
 
-        return new Mesh(vb, primitives, bounds); 
+        return new Mesh(node, vb, primitives, bounds); 
     };
 
     is_visible(camera /*camera.js/Camera*/) {
