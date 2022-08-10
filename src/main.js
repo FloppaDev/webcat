@@ -1,4 +1,7 @@
 
+//TODO Scene objects are currently stored in Data,
+// this would be better to keep Data unmodified.
+
 window.onload = main;
 
 import {Engine} from "./engine.js";
@@ -26,5 +29,6 @@ async function main() {
         return;
     }
 
+    log(engine.data.scenes);
     engine.start();
 }

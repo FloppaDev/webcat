@@ -1,6 +1,7 @@
 
 import {Transform} from "./maths.js";
 import {Mesh} from "./mesh.js";
+import {DrawCall} from "./shaders.js";
 
 export class Node {
 
@@ -37,16 +38,16 @@ export class Scene {
             }
 
             if(mesh.is_visible(camera)) {
+                let transforms = [];
+
+                //TODO support instancing when exporting from blender.
+                for(let node of mesh.nodes) {
+                    transforms.push(node.transform);
+                }
+
                 for(let primitive of mesh.primitives) {
                     let {material_module} = primitive;
                     let {shader} = material_module;
-
-                    let transforms = [];
-
-                    //TODO support instancing when exporting from blender.
-                    for(let node of mesh.nodes) {
-                        tranforms.push(node.transform);
-                    }
 
                     let draw_call = new DrawCall(shader, primitive, transforms);
                     this.draw_calls.push(draw_call);
@@ -57,7 +58,7 @@ export class Scene {
 
     load(data /*data.js:Data*/) {
         const {DATA} = this.data_module;
-        let {nodes} = this;
+        let {nodes, meshes} = this;
 
         for(let {name, mesh} of DATA.objects) {
             let node = new Node(null);
@@ -68,6 +69,8 @@ export class Scene {
             }
 
             node.mesh = Mesh.from_json(node, mesh); 
+
+            meshes.push(node.mesh);
             nodes.push(name, node);
         }
     }

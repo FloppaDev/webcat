@@ -35,11 +35,12 @@ export class Primitive {
 export class Mesh {
     
     constructor(
-        node /*scene.js:Node*/,
+        nodes /*[scene.js:Node]*/,
         vertex_buffer /*VertexBuffer*/,
         primitives /*[Primitive]*/,
         bounds /*Box*/,
     ) {
+        this.nodes = nodes;
         this.vertex_buffer = vertex_buffer;
         this.primitives = primitives;
         this.bounds = bounds;
@@ -91,7 +92,7 @@ export class Mesh {
             primitives.push(new Primitive(ib, 0/*TODO primitive.material*/));
         }
 
-        return new Mesh(node, vb, primitives, bounds); 
+        return new Mesh([node], vb, primitives, bounds); 
     };
 
     is_visible(camera /*camera.js/Camera*/) {
