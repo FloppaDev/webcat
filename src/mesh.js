@@ -47,6 +47,7 @@ export class Mesh {
     }
 
     static from_json = (
+        data /*data.js:Data*/,
         node /*scene.js:Node*/,
         mesh /*TODO mesh object from python*/,
     ) => {
@@ -88,8 +89,12 @@ export class Mesh {
 
         for(let primitive of mesh.primitives) {
             let ib = new IndexBuffer(primitive.indices);
-            //TODO material indices are not exported yet.
-            primitives.push(new Primitive(ib, 0/*TODO primitive.material*/));
+
+            let material_index = 0; //TODO material indices are not exported yet.
+            let material_name = mesh.materials[material_index];
+            let material = data.materials[material_name];
+
+            primitives.push(new Primitive(ib, material));
         }
 
         return new Mesh([node], vb, primitives, bounds); 

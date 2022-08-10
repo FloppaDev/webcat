@@ -123,3 +123,10 @@ export class DrawCall {
 
 }
 
+export Material {
+
+    constructor() {
+
+    }
+
+}

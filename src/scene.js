@@ -68,7 +68,7 @@ export class Scene {
                 continue;
             }
 
-            node.mesh = Mesh.from_json(node, mesh); 
+            node.mesh = Mesh.from_json(data, node, mesh); 
 
             meshes.push(node.mesh);
             nodes.push(name, node);

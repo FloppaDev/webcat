@@ -12,12 +12,18 @@ import {Scene} from "./scene.js";
 
 //{{shader_modules}}
 
+//{{material_modules}}
 
 export class Data {
 
     shaders = {
         //{{shaders}}
         //e.g.  shader_name: new Shader("x.vert", "x.frag", $shader_x)
+    };
+
+    materials = {
+        //{{materials}}
+        //e.g.  material_name: new Material($material_x)
     };
 
     textures = {
