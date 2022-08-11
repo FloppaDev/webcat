@@ -2,6 +2,7 @@
 import {Shader, Material} from "./shaders.js";
 import {Texture} from "./textures.js";
 import {Scene} from "./scene.js";
+import {Config} from "./config.js";
 
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";

@@ -209,11 +209,35 @@ def scenes(data_txt):
 
     return data_txt
 
+def configs(data_txt):
+    paths = []
+    lines = []
+    modules = []
+
+    walk(f'{data}/configs', paths)
+
+    for path in paths:
+        name = path.split('.')[0]
+        lines.append(f'"{name}": new Config($config_{name})')
+        modules.append(f'import * as $config_{name} from "../data/configs/{name}.js";')
+
+    title('Configs')
+    pprint(lines)
+
+    title('Config modules')
+    pprint(modules)
+        
+    data_txt = data_txt.replace('//{{configs}}', strlist(lines, 2))
+    data_txt = data_txt.replace('//{{config_modules}}', strlist(modules, 0))
+
+    return data_txt
+
 data_txt = shaders(data_txt)
 data_txt = materials(data_txt)
 data_txt = textures(data_txt)
 data_txt = sounds(data_txt)
 data_txt = scenes(data_txt)
+data_txt = configs(data_txt)
 
 with open(f'{root}/src/data.js', "w") as file:
     file.write(data_txt)

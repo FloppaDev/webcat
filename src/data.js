@@ -2,6 +2,7 @@
 import {Shader, Material} from "./shaders.js";
 import {Texture} from "./textures.js";
 import {Scene} from "./scene.js";
+import {Config} from "./config.js";
 
 import * as $material_default from "../data/materials/default.js";
 //e.g.  import * as $material_default from "../data/materials/default.js";
@@ -13,7 +14,7 @@ import * as $scn_data_test from "../data/scenes/test.json.js";
 
 //{{script_modules}}
 
-//{{config_modules}}
+
 
 export class Data {
 
@@ -43,7 +44,7 @@ export class Data {
     };
 
     configs = {
-        //{{configs}}
+        
         //e.g.  config_name: new Config($config_x)
     };
 
