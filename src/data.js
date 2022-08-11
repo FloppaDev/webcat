@@ -1,24 +1,30 @@
 
-import {Shader} from "./shaders.js";
+import {Shader, Material} from "./shaders.js";
 import {Texture} from "./textures.js";
 import {Scene} from "./scene.js";
 
-//{{material_modules}}
+import * as $material_default from "../data/materials/default.js";
 //e.g.  import * as $material_default from "../data/materials/default.js";
+
+import * as $shader_default from "../data/shaders/default.js";
 
 import * as $scene_test from "../data/scenes/test.js";
 import * as $scn_data_test from "../data/scenes/test.json.js";
 
 //{{script_modules}}
 
-import * as $shader_default from "../data/shaders/default.js";
-
+//{{config_modules}}
 
 export class Data {
 
     shaders = {
         "default": new Shader("default.vert", "default.frag", $shader_default)
         //e.g.  shader_name: new Shader("x.vert", "x.frag", $shader_x)
+    };
+
+    materials = {
+        "default": new Material($material_default)
+        //e.g.  material_name: new Material($material_x)
     };
 
     textures = {
@@ -38,6 +44,7 @@ export class Data {
 
     configs = {
         //{{configs}}
+        //e.g.  config_name: new Config($config_x)
     };
 
     constructor() {

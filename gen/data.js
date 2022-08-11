@@ -1,18 +1,18 @@
 
-import {Shader} from "./shaders.js";
+import {Shader, Material} from "./shaders.js";
 import {Texture} from "./textures.js";
 import {Scene} from "./scene.js";
 
 //{{material_modules}}
 //e.g.  import * as $material_default from "../data/materials/default.js";
 
+//{{shader_modules}}
+
 //{{scene_modules}}
 
 //{{script_modules}}
 
-//{{shader_modules}}
-
-//{{material_modules}}
+//{{config_modules}}
 
 export class Data {
 
@@ -43,6 +43,7 @@ export class Data {
 
     configs = {
         //{{configs}}
+        //e.g.  config_name: new Config($config_x)
     };
 
     constructor() {

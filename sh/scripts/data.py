@@ -113,6 +113,29 @@ def shaders(data_txt):
 
     return data_txt
 
+def materials(data_txt):
+    paths = []
+    lines = []
+    modules = []
+
+    walk(f'{data}/materials', paths)
+
+    for path in paths:
+        name = path.split('.')[0]
+        lines.append(f'"{name}": new Material($material_{name})')
+        modules.append(f'import * as $material_{name} from "../data/materials/{name}.js";')
+
+    title('Materials')
+    pprint(lines)
+
+    title('Material modules')
+    pprint(modules)
+        
+    data_txt = data_txt.replace('//{{materials}}', strlist(lines, 2))
+    data_txt = data_txt.replace('//{{material_modules}}', strlist(modules, 0))
+
+    return data_txt
+
 def textures(data_txt):
     textures = []
     lines = []
@@ -187,6 +210,7 @@ def scenes(data_txt):
     return data_txt
 
 data_txt = shaders(data_txt)
+data_txt = materials(data_txt)
 data_txt = textures(data_txt)
 data_txt = sounds(data_txt)
 data_txt = scenes(data_txt)
