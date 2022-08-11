@@ -14,7 +14,7 @@ import * as $scn_data_test from "../data/scenes/test.json.js";
 
 //{{script_modules}}
 
-
+import * as $config_keybinds from "../data/configs/keybinds.js";
 
 export class Data {
 
@@ -44,7 +44,7 @@ export class Data {
     };
 
     configs = {
-        
+        "keybinds": new Config($config_keybinds)
         //e.g.  config_name: new Config($config_x)
     };
 
