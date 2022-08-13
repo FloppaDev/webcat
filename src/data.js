@@ -24,7 +24,7 @@ export class Data {
     };
 
     materials = {
-        "default": new Material($material_default)
+        "default": new Material(this, $material_default)
         //e.g.  material_name: new Material($material_x)
     };
 

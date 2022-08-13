@@ -123,7 +123,9 @@ export class Renderer {
         // Draw all objects.
         for(let scene of world.get_active_scenes()) {
             for(let draw_call of scene.draw_calls) {
-                let {shader, primitive, transforms} = draw_call;
+                let {primitive, transforms} = draw_call;
+                let {material} = primitive;
+                let {shader} = material;
 
                 shader.bind_shader(this);
 

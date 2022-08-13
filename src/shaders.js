@@ -98,7 +98,6 @@ export class Shader {
         let {pipeline, program} = this;
 
         ctx.useProgram(program);
-        log(this);
         pipeline.ubos(); 
         pipeline.vao(); 
     }
@@ -112,11 +111,9 @@ export class Shader {
 export class DrawCall {
 
     constructor(
-        shader /*shaders.js:Shader*/, 
         primitive /*Primitive*/, 
         transforms /*maths.js:Transform*/
     ) {
-        this.shader = shader;
         this.primitive = primitive;
         this.transforms = transforms;
     }
@@ -125,8 +122,16 @@ export class DrawCall {
 
 export class Material {
 
-    constructor() {
+    constructor(
+        data /*data.js:Data*/,
+        material_module /*../data/materials/x.js*/,
+    ) {
+        let shader_name = material_module.shader 
+            ? material_module.shader
+            : "default";
 
+        this.material_module = material_module;
+        this.shader = data.shaders[shader_name];
     }
 
 }

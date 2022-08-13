@@ -24,10 +24,10 @@ export class Primitive {
 
     constructor(
         index_buffer /*IndexBuffer*/, 
-        material_module /*shaders.js:Shader.material*/
+        material /*shaders.js:Material*/,
     ){
         this.index_buffer = index_buffer;
-        this.material_module = material_module;
+        this.material = material;
     }
 
 }

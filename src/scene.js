@@ -46,10 +46,7 @@ export class Scene {
                 }
 
                 for(let primitive of mesh.primitives) {
-                    let {material_module} = primitive;
-                    let {shader} = material_module;
-
-                    let draw_call = new DrawCall(shader, primitive, transforms);
+                    let draw_call = new DrawCall(primitive, transforms);
                     this.draw_calls.push(draw_call);
                 }
             }

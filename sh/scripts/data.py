@@ -122,7 +122,7 @@ def materials(data_txt):
 
     for path in paths:
         name = path.split('.')[0]
-        lines.append(f'"{name}": new Material($material_{name})')
+        lines.append(f'"{name}": new Material(this, $material_{name})')
         modules.append(f'import * as $material_{name} from "../data/materials/{name}.js";')
 
     title('Materials')

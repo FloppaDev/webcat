@@ -8,7 +8,7 @@ export const DATA = {
             "name": "Cube",
             "mesh": {
                 "materials": [
-                    "Material"
+                    "default"
                 ],
                 "primitives": [
                     {
