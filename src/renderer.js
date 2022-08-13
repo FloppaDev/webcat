@@ -147,7 +147,7 @@ export class Renderer {
                         }
                     }
 
-                    let instance_buffer = new FloatArray(draw.length());
+                    let instance_buffer = new Float32Array(draw.length);
 
                     for(let i in draw) {
                         let bytes = draw[i].bytes();

@@ -29,6 +29,5 @@ async function main() {
         return;
     }
 
-    log(engine);
     engine.start();
 }

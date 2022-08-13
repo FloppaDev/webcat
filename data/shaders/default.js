@@ -44,6 +44,7 @@ export class Pipeline {
 
 export class MaterialProperties {
 
+    /*Call from shaders.js:Material.constructor to get default material values*/
     constructor() {
         this.texture = "grid";
     }
