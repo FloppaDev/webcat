@@ -25,12 +25,12 @@ export class Pipeline {
     ubos(
         renderer /*renderer.js:Renderer*/, 
         program /*shaders.js:Shader.program*/,
-        material /*Material*/
+        material /*shaders.js:Material*/,
     ) {
         let {ctx} = renderer;
 
         renderer.bind_camera(ctx, program);
-        ctx.bindTexture(ctx.TEXTURE_2D, material.texture);
+        ctx.bindTexture(ctx.TEXTURE_2D, material.properties.texture);
     }
 
     draw(renderer /*renderer.js:Renderer*/) {
@@ -39,7 +39,7 @@ export class Pipeline {
 
 }
 
-export class Material {
+export class MaterialProperties {
 
     constructor() {
         this.texture = "grid.png";

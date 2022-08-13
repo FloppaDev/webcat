@@ -29,6 +29,6 @@ async function main() {
         return;
     }
 
-    log(engine.data.scenes);
+    log(engine);
     engine.start();
 }

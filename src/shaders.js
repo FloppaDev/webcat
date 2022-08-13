@@ -13,7 +13,6 @@ export class Shader {
         this.program = null;
         this.module = module;
         this.pipeline = new module.Pipeline();
-        this.material = new module.Material();
     }
 
     // Builds a shader program from sources. 
@@ -93,13 +92,16 @@ export class Shader {
         return Result.ok(program);
     }
 
-    bind_shader(renderer /*renderer.js:Renderer*/) {
+    bind_shader(
+        renderer /*renderer.js:Renderer*/,
+        material /*Material*/,
+    ) {
         let {ctx} = renderer;
         let {pipeline, program} = this;
 
         ctx.useProgram(program);
-        pipeline.ubos(); 
-        pipeline.vao(); 
+        pipeline.ubos(renderer, program, material); 
+        pipeline.vao(renderer, program); 
     }
 
     draw(renderer /*renderer.js:Renderer*/) {
@@ -126,12 +128,17 @@ export class Material {
         data /*data.js:Data*/,
         material_module /*../data/materials/x.js*/,
     ) {
-        let shader_name = material_module.shader 
-            ? material_module.shader
+        let material_config = new material_module.Material();
+
+        let shader_name = material_config.shader 
+            ? material_config.shader
             : "default";
 
         this.material_module = material_module;
         this.shader = data.shaders[shader_name];
+
+        let defaults = new this.shader.module.MaterialProperties();
+        this.properties = material_config.properties(defaults);
     }
 
 }
