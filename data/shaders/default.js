@@ -23,6 +23,7 @@ export class Pipeline {
 
     // Bind UBOs for draw.
     ubos(
+        data /*data.js:Data*/,
         renderer /*renderer.js:Renderer*/, 
         program /*shaders.js:Shader.program*/,
         material /*shaders.js:Material*/,
@@ -30,7 +31,9 @@ export class Pipeline {
         let {ctx} = renderer;
 
         renderer.bind_camera(ctx, program);
-        ctx.bindTexture(ctx.TEXTURE_2D, material.properties.texture);
+
+        let texture = data.textures[material.properties.texture].gl_texture;
+        ctx.bindTexture(ctx.TEXTURE_2D, texture);
     }
 
     draw(renderer /*renderer.js:Renderer*/) {
@@ -42,7 +45,7 @@ export class Pipeline {
 export class MaterialProperties {
 
     constructor() {
-        this.texture = "grid.png";
+        this.texture = "grid";
     }
 
 }

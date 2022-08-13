@@ -93,6 +93,7 @@ export class Shader {
     }
 
     bind_shader(
+        data /*data.js:Data*/,
         renderer /*renderer.js:Renderer*/,
         material /*Material*/,
     ) {
@@ -100,7 +101,7 @@ export class Shader {
         let {pipeline, program} = this;
 
         ctx.useProgram(program);
-        pipeline.ubos(renderer, program, material); 
+        pipeline.ubos(data, renderer, program, material); 
         pipeline.vao(renderer, program); 
     }
 

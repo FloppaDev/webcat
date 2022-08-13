@@ -29,8 +29,11 @@ export class Renderer {
 
     /*Call from "engine.js:Engine"*/
     // Start rendering.
-    start(world /*world.js:World*/) {
-        window.requestAnimationFrame(((t) => this.#draw(world, t)).bind(this));
+    start(
+        data /*data.js:Data*/,
+        world /*world.js:World*/,
+    ) {
+        window.requestAnimationFrame(((t) => this.#draw(data, world, t)).bind(this));
     }
 
     // Load OpenGl context.
@@ -77,7 +80,7 @@ export class Renderer {
     }
 
     // Bind camera to a uniform in specified program.
-    #bind_camera(ctx, program) {
+    bind_camera(ctx, program) {
         let {camera} = this;
         let {x, y} = camera.position;
         let {scale_x, scale_y} = camera.scale; //TODO depth
@@ -87,7 +90,11 @@ export class Renderer {
     }
 
     // Called each frame.
-    #draw(world, t) {
+    #draw(
+        data /*data.js:Data*/,
+        world, 
+        t
+    ) {
         let {ctx, delta, time} = this;
 
         // Update time infos.
@@ -127,7 +134,8 @@ export class Renderer {
                 let {material} = primitive;
                 let {shader} = material;
 
-                shader.bind_shader(this);
+                //TODO material.bind?
+                shader.bind_shader(data, this, material);
 
                 for (let transform of transforms) {
                     let draw = [];
@@ -157,7 +165,7 @@ export class Renderer {
         }
 
         // Request next frame.
-        window.requestAnimationFrame(((t) => this.#draw(world, t)).bind(this));
+        window.requestAnimationFrame(((t) => this.#draw(data, world, t)).bind(this));
     }
 
 }

@@ -6,10 +6,6 @@ export class Material {
         this.shader = "default";
     }
 
-    test(){
-        log('ok');
-    }
-
     properties(material_properties /*shaders/x.js:MaterialProperties*/) {
         //Changes to the default values go here.
 
