@@ -19,8 +19,19 @@ export class Transform {
         this.position = position;
         this.angle = angle;
         this.scale = scale;
+        this.is_active = true; //TODO set from blender
 
         //TODO matrix
+    }
+
+    //TODO return a matrix
+    // Returns the transform as bytes, for use in shader code.
+    bytes() {
+        let bytes = new ArrayBuffer(4*2);
+        bytes[0] = this.position.x;
+        bytes[1] = this.position.y;
+
+        return bytes;
     }
 
 }

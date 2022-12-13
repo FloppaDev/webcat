@@ -130,6 +130,7 @@ export class Renderer {
         // Draw all objects.
         for(let scene of world.get_active_scenes()) {
             for(let draw_call of scene.draw_calls) {
+                log(draw_call);
                 let {primitive, transforms} = draw_call;
                 let {material} = primitive;
                 let {shader} = material;
@@ -140,20 +141,20 @@ export class Renderer {
                 for (let transform of transforms) {
                     let draw = [];
 
-                    for (let transform of transforms) {
-                        if (transform.is_active) {
-                            //TODO culling
-                            draw.push(transform);
-                        }
+                    if (transform.is_active) {
+                        //TODO culling
+                        draw.push(transform);
+                        //TODO fix: Transforms are empty.
                     }
 
-                    let instance_buffer = new Float32Array(draw.length);
+                    let instance_buffer = new Float32Array(draw.length * 2);
 
                     for(let i in draw) {
                         let bytes = draw[i].bytes();
 
                         for(let b in bytes) {
-                            instance_buffer[i * VertexBuffer.STRIDE + b] = bytes[b];
+                            //TODO: update, it contains only position (V2) for now.
+                            instance_buffer[i * 2 + b] = bytes[b];
                         }
                     }
 

@@ -6,6 +6,7 @@ with pkgs;
 pkgs.mkShell {
   buildInputs = [
     python3 
+    blender
   ];
 
   PROJECT_ROOT = builtins.toString ./.;

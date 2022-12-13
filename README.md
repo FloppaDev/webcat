@@ -4,7 +4,9 @@ A 2d game engine written in js.
   
 It is made from scratch using WebGL2 for rendering
 and Blender as a level editor.  
-Python is used to export levels data and make all the assets available to the game.
+Python is used to export levels data and make all the assets available to the game.  
+  
+Work in progress, this is currently not functional and needs some cleanup.
 
 ## Structure of the project
 
